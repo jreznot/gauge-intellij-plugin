@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.markdownPreview;
 
 import com.intellij.notification.Notification;
@@ -16,15 +32,15 @@ import com.thoughtworks.gauge.settings.GaugeSettingsModel;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
 import static com.intellij.openapi.vcs.VcsNotifier.STANDARD_NOTIFICATION;
 
-class Spectacle {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.markdownPreview.Spectacle");
+final class Spectacle {
+    private static final Logger LOG = Logger.getInstance(Spectacle.class);
+
     public static final String NAME = "spectacle";
+
     private final Project project;
-    private GaugeSettingsModel settings;
+    private final GaugeSettingsModel settings;
     private static boolean installing = false;
 
     Spectacle(Project project, GaugeSettingsModel settings) {
@@ -32,14 +48,13 @@ class Spectacle {
         this.settings = settings;
     }
 
-
     private void install() {
         if (installing) {
-            Notifications.Bus.notify(new Notification("Installing", "Installation in progress...", "Installing Plugin: Spectacle", NotificationType.INFORMATION));
+            Notifications.Bus.notify(new Notification("Installing", "Installation in progress...", "Installing plugin: spectacle", NotificationType.INFORMATION));
             return;
         }
         installing = true;
-        ProgressManager.getInstance().run(new Task.Backgroundable(this.project, "Installing Plugin : Spectacle", false) {
+        ProgressManager.getInstance().run(new Task.Backgroundable(this.project, "Installing plugin : spectacle", false) {
             public void run(@NotNull ProgressIndicator progressIndicator) {
                 progressIndicator.setIndeterminate(true);
                 progressIndicator.setText("Installing plugin : Spectacle");
@@ -51,10 +66,11 @@ class Spectacle {
                     installing = false;
                     if (exitCode != 0)
                         throw new RuntimeException(GaugeUtil.getOutput(process.getInputStream(), "\n"));
-                    Notifications.Bus.notify(new Notification("Successful", "Installation Completed", "Installation of plugin Spectacle is completed successfully", NotificationType.INFORMATION));
+                    Notifications.Bus.notify(new Notification("Successful", "Installation completed",
+                            "Installation of plugin Spectacle is completed successfully", NotificationType.INFORMATION));
                 } catch (Exception e) {
                     LOG.debug(e);
-                    Notification notification = new Notification("Error", "Installation Failed", e.getMessage(), NotificationType.ERROR);
+                    Notification notification = new Notification("Error", "Installation failed", e.getMessage(), NotificationType.ERROR);
                     Notifications.Bus.notify(notification, project);
                 }
                 progressIndicator.cancel();
@@ -62,13 +78,14 @@ class Spectacle {
         });
     }
 
-    boolean isInstalled() throws IOException, InterruptedException {
+    boolean isInstalled() {
         return GaugeVersion.getVersion(true).isPluginInstalled(NAME);
     }
 
     void notifyToInstall() {
-        Notification notification = STANDARD_NOTIFICATION.createNotification("Error: Specification Preview", "Missing plugin: Spectacle. To install, run `gauge install spectacle` or click below", NotificationType.ERROR, null);
-        notification.addAction(new NotificationAction("Install Spectacle") {
+        Notification notification = STANDARD_NOTIFICATION.createNotification("Error: Specification Preview",
+                "Missing plugin: Spectacle. To install, run `gauge install spectacle` or click below", NotificationType.ERROR, null);
+        notification.addAction(new NotificationAction("Install spectacle") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
                 install();

@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.module;
 
@@ -39,7 +49,7 @@ import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 public class GaugeModuleBuilder extends JavaModuleBuilder {
 
     @Override
-    public void setupRootModel(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+    public void setupRootModel(@NotNull ModifiableRootModel modifiableRootModel) throws ConfigurationException {
         checkGaugeIsInstalled();
         super.setupRootModel(modifiableRootModel);
         gaugeInit(modifiableRootModel);
@@ -63,10 +73,13 @@ public class GaugeModuleBuilder extends JavaModuleBuilder {
         return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, this, this::isSuitableSdkType);
     }
 
-    private void gaugeInit(final ModifiableRootModel modifiableRootModel) throws ConfigurationException {
-        File directory = new File(getModuleFileDirectory());
-        if(GaugeUtil.isGaugeProjectDir(directory)){
-            throw  new ConfigurationException("Given location is already a Gauge Project. Please try to initialize a Gauge project in a different location.");
+    private void gaugeInit(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+        String moduleFileDirectory = getModuleFileDirectory();
+        if (moduleFileDirectory == null) return;
+
+        File directory = new File(moduleFileDirectory);
+        if (GaugeUtil.isGaugeProjectDir(directory)) {
+            throw new ConfigurationException("Given location is already a Gauge Project. Please try to initialize a Gauge project in a different location.");
         }
         ProgressManager.getInstance().run(new Task.Modal(modifiableRootModel.getProject(), "Initializing gauge-" + getLanguage() + " project", true) {
             public void run(@NotNull ProgressIndicator progressIndicator) {
@@ -102,7 +115,7 @@ public class GaugeModuleBuilder extends JavaModuleBuilder {
     }
 
     @Override
-    public ModuleType getModuleType() {
+    public ModuleType<?> getModuleType() {
         return GaugeModuleType.getInstance();
     }
 

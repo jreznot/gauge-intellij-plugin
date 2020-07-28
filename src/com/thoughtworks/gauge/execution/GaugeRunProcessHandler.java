@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.execution;
 
@@ -24,7 +34,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
 public class GaugeRunProcessHandler extends ColoredProcessHandler {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeRunProcessHandler");
+    private static final Logger LOG = Logger.getInstance(GaugeRunProcessHandler.class);
+
     private GaugeRunProcessHandler(Process process, String commandLineString) {
         super(process, commandLineString);
     }
@@ -57,6 +68,7 @@ public class GaugeRunProcessHandler extends ColoredProcessHandler {
             // Trying to connect to gauge java for 25 secs. The sleep is because it may take a few seconds for gauge to launch the java process and the jvm to load after that
             while (!debuggerConnected && ((System.currentTimeMillis() - startTime) < 25000)) {
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(5000);
                     basicProgramRunner.execute(environment);
                     debuggerConnected = true;

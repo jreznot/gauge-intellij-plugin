@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.autocomplete;
 
@@ -34,7 +44,11 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +57,7 @@ import static com.thoughtworks.gauge.language.psi.SpecPsiImplUtil.getStepValueFo
 import static com.thoughtworks.gauge.util.StepUtil.getGaugeStepAnnotationValues;
 
 public class StepCompletionProvider extends CompletionProvider<CompletionParameters> {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.autocomplete.StepCompletionProvider");
+    private static final Logger LOG = Logger.getInstance(StepCompletionProvider.class);
 
     public static final String STEP = "step";
     public static final String CONCEPT = "concept";
@@ -54,7 +68,8 @@ public class StepCompletionProvider extends CompletionProvider<CompletionParamet
     }
 
     @Override
-    public void addCompletions(@NotNull final CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet resultSet) {
+    public void addCompletions(@NotNull final CompletionParameters parameters, @NotNull ProcessingContext context,
+                               @NotNull CompletionResultSet resultSet) {
         resultSet.stopHere();
         final String prefix = getPrefix(parameters);
 
@@ -111,9 +126,9 @@ public class StepCompletionProvider extends CompletionProvider<CompletionParamet
         return filledParams;
     }
 
-    private class Type {
-        private String text;
-        private String type;
+    private static class Type {
+        private final String text;
+        private final String type;
 
         Type(String text, String type) {
             this.text = text;
@@ -139,8 +154,8 @@ public class StepCompletionProvider extends CompletionProvider<CompletionParamet
                 gaugeConnection.fetchAllSteps().forEach(s -> addStep(steps, s, STEP));
                 gaugeConnection.fetchAllConcepts().forEach(concept -> addStep(steps, concept.getStepValue(), CONCEPT));
             }
-        } catch (IOException ignored) {
-            LOG.debug(ignored);
+        } catch (IOException ex) {
+            LOG.debug(ex);
         }
         return steps.values();
     }
@@ -149,11 +164,11 @@ public class StepCompletionProvider extends CompletionProvider<CompletionParamet
     private Map<String, Type> getImplementedSteps(Module module) {
         Map<String, Type> steps = new HashMap<>();
         Collection<PsiMethod> methods = StepUtil.getStepMethods(module);
-        methods.forEach(m -> {
-            getGaugeStepAnnotationValues(m).forEach(s -> {
+        for (PsiMethod m : methods) {
+            for (String s : getGaugeStepAnnotationValues(m)) {
                 steps.put(getStepValueFor(module, m, s, false).getStepText(), new Type(s, STEP));
-            });
-        });
+            }
+        }
         return steps;
     }
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.annotator;
 
 import com.intellij.lang.ASTNode;
@@ -13,7 +29,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StepAnnotatorTest {
 
@@ -22,14 +42,14 @@ public class StepAnnotatorTest {
     private TextRange textRange;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         holder = mock(AnnotationHolder.class);
         helper = mock(AnnotationHelper.class);
         textRange = mock(TextRange.class);
     }
 
     @Test
-    public void testShouldNotAnnotateNonGaugeElement() throws Exception {
+    public void testShouldNotAnnotateNonGaugeElement() {
         PsiClass element = mock(PsiClass.class);
         when(helper.isGaugeModule(element)).thenReturn(true);
 
@@ -39,7 +59,7 @@ public class StepAnnotatorTest {
     }
 
     @Test
-    public void testShouldAnnotateBlankSpecStep() throws Exception {
+    public void testShouldAnnotateBlankSpecStep() {
         SpecStepImpl element = mock(SpecStepImpl.class);
 
         when(helper.isGaugeModule(element)).thenReturn(true);
@@ -52,7 +72,7 @@ public class StepAnnotatorTest {
     }
 
     @Test
-    public void testShouldAnnotateBlankConceptStep() throws Exception {
+    public void testShouldAnnotateBlankConceptStep() {
         ConceptStepImpl element = mock(ConceptStepImpl.class);
 
         when(helper.isGaugeModule(element)).thenReturn(true);
@@ -62,21 +82,21 @@ public class StepAnnotatorTest {
 
         new StepAnnotator(helper).annotate(element, holder);
 
-        verify(holder, times(1)).createErrorAnnotation(textRange, "Step should not be blank");
+        verify(holder, times(1)).newAnnotation(HighlightSeverity.ERROR, "Step should not be blank");
     }
 
     @Test
-    public void testShouldNotAnnotateInNonGaugeModule() throws Exception {
+    public void testShouldNotAnnotateInNonGaugeModule() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         when(helper.isGaugeModule(element)).thenReturn(false);
 
         new StepAnnotator(helper).annotate(element, holder);
 
-        verify(holder, never()).createErrorAnnotation(any(TextRange.class), any(String.class));
+        verify(holder, never()).newAnnotation(HighlightSeverity.ERROR, any(String.class));
     }
 
     @Test
-    public void testShouldAnnotateInGaugeModule() throws Exception {
+    public void testShouldAnnotateInGaugeModule() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         Module module = mock(Module.class);
 
@@ -85,10 +105,12 @@ public class StepAnnotatorTest {
         when(helper.getModule(element)).thenReturn(module);
         when(helper.isEmpty(element)).thenReturn(false);
         when(helper.isImplemented(element, module)).thenReturn(false);
-        when(holder.createErrorAnnotation(textRange, "Undefined Step")).thenReturn(new Annotation(1, 1, new HighlightSeverity("dsf", 1), "", ""));
+        when(holder.createErrorAnnotation(textRange, "Undefined step")).thenReturn(
+                new Annotation(1, 1, new HighlightSeverity("dsf", 1), "", "")
+        );
 
         new StepAnnotator(helper).annotate(element, holder);
 
-        verify(holder, times(1)).createErrorAnnotation(textRange, "Undefined Step");
+        verify(holder, times(1)).newAnnotation(HighlightSeverity.ERROR, "Undefined step");
     }
 }

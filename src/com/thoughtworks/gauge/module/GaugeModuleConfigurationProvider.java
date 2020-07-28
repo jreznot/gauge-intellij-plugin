@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.module;
 
@@ -19,9 +29,9 @@ import java.util.List;
 public class GaugeModuleConfigurationProvider implements ModuleConfigurationEditorProvider {
     @Override
     public ModuleConfigurationEditor[] createEditors(ModuleConfigurationState state) {
-        final Module module = state.getRootModel().getModule();
+        Module module = state.getRootModel().getModule();
 
-        final ModuleType moduleType = ModuleType.get(module);
+        ModuleType<?> moduleType = ModuleType.get(module);
 
         if (!(moduleType instanceof GaugeModuleType)) {
             return ModuleConfigurationEditor.EMPTY;
@@ -32,6 +42,6 @@ public class GaugeModuleConfigurationProvider implements ModuleConfigurationEdit
         editors.add(editorFactory.createModuleContentRootsEditor(state));
         editors.add(editorFactory.createOutputEditor(state));
         editors.add(editorFactory.createClasspathEditor(state));
-        return editors.toArray(new ModuleConfigurationEditor[editors.size()]);
+        return editors.toArray(new ModuleConfigurationEditor[0]);
     }
 }

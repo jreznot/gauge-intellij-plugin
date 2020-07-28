@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.rename;
 
 import com.intellij.ide.highlighter.JavaFileType;
@@ -29,7 +45,7 @@ public class CustomRenameHandlerTest {
     private DataContext dataContext;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dataContext = mock(DataContext.class);
         virtualFile = mock(VirtualFile.class);
         editor = mock(Editor.class);
@@ -37,7 +53,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameSpecStepElement() throws Exception {
+    public void testShouldRenameSpecStepElement() {
         PsiElement element = mock(SpecStepImpl.class);
 
         when(virtualFile.getFileType()).thenReturn(SpecFileType.INSTANCE);
@@ -50,7 +66,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameConceptStepElement() throws Exception {
+    public void testShouldRenameConceptStepElement() {
         PsiElement element = mock(ConceptStepImpl.class);
 
         when(virtualFile.getFileType()).thenReturn(SpecFileType.INSTANCE);
@@ -63,7 +79,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameImplementedMethodElement() throws Exception {
+    public void testShouldRenameImplementedMethodElement() {
         PsiElement element = mock(PsiMethod.class);
 
         when(virtualFile.getFileType()).thenReturn(SpecFileType.INSTANCE);
@@ -76,7 +92,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldNotRenameNonGaugeElement() throws Exception {
+    public void testShouldNotRenameNonGaugeElement() {
         PsiElement element = mock(PsiElement.class);
 
         when(virtualFile.getFileType()).thenReturn(SpecFileType.INSTANCE);
@@ -89,7 +105,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldNotRenameInNonGaugeFile() throws Exception {
+    public void testShouldNotRenameInNonGaugeFile() {
         PsiElement element = mock(SpecStepImpl.class);
 
         when(virtualFile.getFileType()).thenReturn(JavaFileType.INSTANCE);
@@ -102,7 +118,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameWhenElementIsNotPresentInDataContext() throws Exception {
+    public void testShouldRenameWhenElementIsNotPresentInDataContext() {
         CaretModel caretModel = mock(CaretModel.class);
         PsiFile file = mock(PsiFile.class);
 
@@ -122,7 +138,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameWhenNoEditorInDataContext() throws Exception {
+    public void testShouldRenameWhenNoEditorInDataContext() {
         when(dataContext.getData(CommonDataKeys.PSI_ELEMENT.getName())).thenReturn(null);
         when(dataContext.getData(CommonDataKeys.EDITOR.getName())).thenReturn(null);
 
@@ -131,7 +147,7 @@ public class CustomRenameHandlerTest {
     }
 
     @Test
-    public void testShouldRenameWhenPsiFileIsNotPresentInDataContext() throws Exception {
+    public void testShouldRenameWhenPsiFileIsNotPresentInDataContext() {
         CaretModel caretModel = mock(CaretModel.class);
 
         when(dataContext.getData(CommonDataKeys.PSI_ELEMENT.getName())).thenReturn(null);

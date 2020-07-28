@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.findUsages.helper;
 
 import com.intellij.openapi.project.Project;
@@ -5,20 +21,22 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import com.thoughtworks.gauge.StepValue;
 import com.thoughtworks.gauge.findUsages.StepCollector;
 import com.thoughtworks.gauge.helper.ModuleHelper;
 import com.thoughtworks.gauge.language.psi.impl.ConceptStepImpl;
 import com.thoughtworks.gauge.language.psi.impl.SpecStepImpl;
-import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-
-public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
+public class ReferenceSearchHelperTest extends LightJavaCodeInsightFixtureTestCase {
 
     private Project project;
     private ModuleHelper moduleHelper;
@@ -34,8 +52,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         collector = mock(StepCollector.class);
     }
 
-    @Test
-    public void testShouldFindReferencesOfGaugeElement() throws Exception {
+    public void testShouldFindReferencesOfGaugeElement() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, GlobalSearchScope.allScope(project), true);
@@ -47,8 +64,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         assertTrue("Should find reference for SpecStep(Expected: true, Actual: false)", shouldFindReferences);
     }
 
-    @Test
-    public void testShouldNotFindReferencesOfNonGaugeElement() throws Exception {
+    public void testShouldNotFindReferencesOfNonGaugeElement() {
         PsiClass element = mock(PsiClass.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, GlobalSearchScope.allScope(project), true);
@@ -61,8 +77,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         assertFalse("Should find reference for PsiClass(Expected: false, Actual: true)", shouldFindReferences);
     }
 
-    @Test
-    public void testShouldNotFindReferencesWhenUnknownScope() throws Exception {
+    public void testShouldNotFindReferencesWhenUnknownScope() {
         PsiClass element = mock(PsiClass.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, scope, true);
@@ -76,8 +91,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         assertFalse("Should find reference When unknown scope(Expected: false, Actual: true)", shouldFindReferences);
     }
 
-    @Test
-    public void testShouldFindReferencesWhenNotUnknownScope() throws Exception {
+    public void testShouldFindReferencesWhenNotUnknownScope() {
         PsiClass element = mock(PsiClass.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, scope, true);
@@ -91,8 +105,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         assertFalse("Should find reference When scope is not unknown(Expected: true, Actual: false)", shouldFindReferences);
     }
 
-    @Test
-    public void testGetReferenceElements() throws Exception {
+    public void testGetReferenceElements() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         when(element.getProject()).thenReturn(project);
         StepValue stepValue = new StepValue("hello", "", new ArrayList<>());
@@ -106,8 +119,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         verify(collector, times(1)).get("hello");
     }
 
-    @Test
-    public void testGetReferenceElementsForConceptStep() throws Exception {
+    public void testGetReferenceElementsForConceptStep() {
         ConceptStepImpl element = mock(ConceptStepImpl.class);
         when(element.getProject()).thenReturn(project);
         StepValue stepValue = new StepValue("# hello", "", new ArrayList<>());
@@ -121,8 +133,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         verify(collector, times(1)).get("hello");
     }
 
-    @Test
-    public void testShouldNotFindReferencesIfNotGaugeModule() throws Exception {
+    public void testShouldNotFindReferencesIfNotGaugeModule() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, scope, true);
@@ -137,8 +148,7 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
         verify(scope, never()).getDisplayName();
     }
 
-    @Test
-    public void testShouldFindReferencesIfGaugeModule() throws Exception {
+    public void testShouldFindReferencesIfGaugeModule() {
         SpecStepImpl element = mock(SpecStepImpl.class);
         when(element.getProject()).thenReturn(project);
         ReferencesSearch.SearchParameters searchParameters = new ReferencesSearch.SearchParameters(element, scope, true);
@@ -151,5 +161,4 @@ public class ReferenceSearchHelperTest extends LightCodeInsightFixtureTestCase {
 
         verify(scope, times(1)).getDisplayName();
     }
-
 }

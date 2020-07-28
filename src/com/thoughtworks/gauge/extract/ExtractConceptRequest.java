@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.extract;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -18,7 +34,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtractConceptRequest {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.extract.ExtractConceptRequest");
+    private static final Logger LOG = Logger.getInstance(ExtractConceptRequest.class);
+
     private List<Api.step> steps;
     private final String fileName;
     private final Api.step concept;
@@ -82,9 +99,9 @@ public class ExtractConceptRequest {
         if (gaugeService != null)
             try {
                 return gaugeService.getGaugeConnection().sendGetExtractConceptRequest(steps, concept, refactorOtherUsages, fileName, textInfo);
-            } catch (Exception ignored) {
+            } catch (Exception ex) {
                 message = "Something went wrong during extract concept request.";
-                LOG.debug(ignored);
+                LOG.debug(ex);
             }
         return Api.ExtractConceptResponse.newBuilder().setIsSuccess(false).setError(message).build();
     }

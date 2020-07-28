@@ -5,20 +5,14 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.4.15"
+    id "org.jetbrains.intellij" version "0.4.21"
     id "java"
-    id "idea"
 }
 
 intellij {
     plugins 'java'
-    version ideaVersion
+    version '2020.2'
     pluginName 'Gauge-Java-Intellij'
-    sameSinceUntilBuild false
-    patchPluginXml {
-        sinceBuild customSinceBuild
-        untilBuild customUntilBuild
-    }
 }
 
 allprojects {
@@ -39,6 +33,7 @@ allprojects {
 dependencies {
     compile(
             'com.thoughtworks.gauge:gauge-java:0.7.3',
+            'com.thoughtworks.gauge:gauge-api-client:1.0.27'
     )
     testCompile(
             'org.mockito:mockito-all:1.10.19',

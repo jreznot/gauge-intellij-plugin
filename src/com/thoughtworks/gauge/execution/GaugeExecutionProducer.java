@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.execution;
 
@@ -20,13 +30,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.thoughtworks.gauge.language.SpecFile;
 import com.thoughtworks.gauge.language.psi.SpecScenario;
-import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import static com.thoughtworks.gauge.util.GaugeUtil.isSpecFile;
 
-public class GaugeExecutionProducer extends RunConfigurationProducer {
+public class GaugeExecutionProducer extends RunConfigurationProducer<RunConfiguration> {
 
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeExecutionProducer");
+    private static final Logger LOG = Logger.getInstance(GaugeExecutionProducer.class);
+
     public GaugeExecutionProducer() {
         super(new GaugeRunTaskConfigurationType());
     }
@@ -36,7 +47,8 @@ public class GaugeExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context, Ref sourceElement) {
+    protected boolean setupConfigurationFromContext(@NotNull RunConfiguration configuration, ConfigurationContext context,
+                                                    @NotNull Ref sourceElement) {
         VirtualFile[] selectedFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(context.getDataContext());
         if (selectedFiles == null || selectedFiles.length > 1) return false;
         Module module = context.getModule();
@@ -53,15 +65,15 @@ public class GaugeExecutionProducer extends RunConfigurationProducer {
             return true;
         } catch (Exception ex) {
             LOG.debug(ex);
-            ex.printStackTrace();
         }
         return true;
     }
 
     @Override
-    public boolean isConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(RunConfiguration configuration, @NotNull ConfigurationContext context) {
         if (!(configuration.getType() instanceof GaugeRunTaskConfigurationType)) return false;
-        Location location = context.getLocation();
+
+        Location<?> location = context.getLocation();
         PsiElement element = CommonDataKeys.PSI_ELEMENT.getData(context.getDataContext());
         if (location == null || location.getVirtualFile() == null || element == null) return false;
         if (!isInSpecScope(context.getPsiLocation())) return false;

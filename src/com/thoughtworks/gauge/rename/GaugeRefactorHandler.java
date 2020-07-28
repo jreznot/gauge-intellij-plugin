@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.rename;
 
 import com.intellij.openapi.application.TransactionGuard;
@@ -16,7 +32,7 @@ import com.thoughtworks.gauge.inspection.GaugeError;
 import com.thoughtworks.gauge.undo.UndoHandler;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import gauge.messages.Api;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
 
@@ -32,7 +48,7 @@ class GaugeRefactorHandler {
         this.editor = editor;
     }
 
-    void compileAndRefactor(String currentStepText, String newStepText, @Nullable RefactorStatusCallback refactorStatusCallback) {
+    void compileAndRefactor(String currentStepText, String newStepText, @NotNull RefactorStatusCallback refactorStatusCallback) {
         refactorStatusCallback.onStatusChange("Compiling...");
         TransactionId contextTransaction = TransactionGuard.getInstance().getContextTransaction();
         CompilerManager.getInstance(project).make((aborted, errors, warnings, context) -> {
@@ -49,7 +65,7 @@ class GaugeRefactorHandler {
         Module module = GaugeUtil.moduleForPsiElement(file);
         TransactionGuard.getInstance().submitTransaction(() -> {
         }, contextTransaction, () -> {
-            Api.PerformRefactoringResponse response = null;
+            Api.PerformRefactoringResponse response;
             FileDocumentManager.getInstance().saveAllDocuments();
             FileDocumentManager.getInstance().saveDocumentAsIs(editor.getDocument());
             GaugeService gaugeService = Gauge.getGaugeService(module, true);

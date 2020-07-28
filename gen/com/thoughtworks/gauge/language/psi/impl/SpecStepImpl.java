@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SpecStepImpl extends SpecNamedElementImpl implements SpecStep {
     private boolean isConcept = false;
-    private ModuleHelper helper;
+    private final ModuleHelper helper;
 
     public SpecStepImpl(@NotNull ASTNode node) {
         super(node);
@@ -86,7 +86,7 @@ public class SpecStepImpl extends SpecNamedElementImpl implements SpecStep {
     public List<SpecStaticArg> getStaticArgList() {
         List<SpecArg> argList = getArgList();
 
-        List<SpecStaticArg> specStaticArgs = new ArrayList<SpecStaticArg>();
+        List<SpecStaticArg> specStaticArgs = new ArrayList<>();
         for (SpecArg arg : argList) {
             SpecStaticArg staticArg = PsiTreeUtil.getChildOfType(arg, SpecStaticArg.class);
             if (staticArg != null) {

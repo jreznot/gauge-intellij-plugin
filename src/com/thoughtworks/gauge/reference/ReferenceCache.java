@@ -1,5 +1,20 @@
-package com.thoughtworks.gauge.reference;
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
+package com.thoughtworks.gauge.reference;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
@@ -8,7 +23,8 @@ import com.thoughtworks.gauge.language.psi.SpecStep;
 import java.util.Hashtable;
 
 public class ReferenceCache {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.reference.ReferenceCache");
+    private static final Logger LOG = Logger.getInstance(ReferenceCache.class);
+
     private final Hashtable<String, PsiStepReferenceCache> stepReferences;
 
     public ReferenceCache() {
@@ -48,9 +64,9 @@ public class ReferenceCache {
         return psiElement.isValid() && element.getText().equals(psiElement.getText());
     }
 
-    private class PsiStepReferenceCache {
-        private String text;
-        private PsiElement psiElement;
+    private static class PsiStepReferenceCache {
+        private final String text;
+        private final PsiElement psiElement;
 
         public PsiStepReferenceCache(String text, PsiElement psiElement) {
             this.text = text;

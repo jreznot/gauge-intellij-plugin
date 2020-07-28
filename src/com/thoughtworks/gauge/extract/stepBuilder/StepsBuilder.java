@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.extract.stepBuilder;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -13,12 +29,12 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class StepsBuilder {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.extract.stepBuilder.StepsBuilder");
+    private static final Logger LOG = Logger.getInstance(StepsBuilder.class);
+
     protected final Editor editor;
     protected final PsiFile psiFile;
     protected Map<String, String> tableMap = new HashMap<>();
     protected Map<String, String> TextToTableMap = new HashMap<>();
-
 
     public StepsBuilder(Editor editor, PsiFile psiFile) {
         this.editor = editor;
@@ -43,14 +59,14 @@ public abstract class StepsBuilder {
         return new SpecStepsBuilder(editor, psiFile);
     }
 
-    protected PsiElement getStep(PsiElement element, Class stepClass) {
+    protected PsiElement getStep(PsiElement element, Class<?> stepClass) {
         if (element.getParent() == null) return null;
         if (element.getParent().getClass().equals(stepClass))
             return element.getParent();
         return getStep(element.getParent(), stepClass);
     }
 
-    protected List<PsiElement> getPsiElements(Class stepClass) {
+    protected List<PsiElement> getPsiElements(Class<?> stepClass) {
         SelectionModel selectionModel = editor.getSelectionModel();
         List<PsiElement> specSteps = new ArrayList<>();
         int currentOffset = selectionModel.getSelectionStart();
@@ -61,8 +77,8 @@ public abstract class StepsBuilder {
                 if (step == null) return new ArrayList<>();
                 specSteps.add(step);
                 currentOffset += step.getText().length();
-            } catch (Exception ignored) {
-                LOG.debug(ignored);
+            } catch (Exception ex) {
+                LOG.debug(ex);
             }
         }
         return specSteps;

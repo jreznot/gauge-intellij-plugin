@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.execution;
 
@@ -12,7 +22,6 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -21,12 +30,10 @@ import com.intellij.psi.PsiFile;
 import com.thoughtworks.gauge.Constants;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.thoughtworks.gauge.util.GaugeUtil.isSpecFile;
-
 
 public class SpecsExecutionProducer extends RunConfigurationProducer {
 
@@ -41,7 +48,9 @@ public class SpecsExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(RunConfiguration configuration, ConfigurationContext configurationContext, Ref ref) {
+    protected boolean setupConfigurationFromContext(@NotNull RunConfiguration configuration,
+                                                    ConfigurationContext configurationContext,
+                                                    @NotNull Ref ref) {
         VirtualFile[] selectedFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(configurationContext.getDataContext());
         Module module = configurationContext.getModule();
         if (selectedFiles == null || module == null)
@@ -67,7 +76,7 @@ public class SpecsExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    public boolean isConfigurationFromContext(RunConfiguration config, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(RunConfiguration config, @NotNull ConfigurationContext context) {
         if (!(config.getType() instanceof GaugeRunTaskConfigurationType)) return false;
         if (!(context.getPsiLocation() instanceof PsiDirectory) && !(context.getPsiLocation() instanceof PsiFile))
             return false;

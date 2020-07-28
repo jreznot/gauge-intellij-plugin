@@ -1,22 +1,41 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.util;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiAnnotationMemberValue;
+import com.intellij.psi.PsiArrayInitializerMemberValue;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.thoughtworks.gauge.Constants;
-import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.Step;
 import com.thoughtworks.gauge.StepValue;
+import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.language.psi.SpecPsiImplUtil;
 import com.thoughtworks.gauge.language.psi.SpecStep;
@@ -25,14 +44,15 @@ import com.thoughtworks.gauge.language.psi.impl.ConceptStepImpl;
 import com.thoughtworks.gauge.language.psi.impl.SpecStepImpl;
 import com.thoughtworks.gauge.reference.ReferenceCache;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 public class StepUtil {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.util.StepUtil");
-    private static HashMap<String, StepValue> stepValueCache = new HashMap<>();
+    private static final Logger LOG = Logger.getInstance(StepUtil.class);
+    private static final HashMap<String, StepValue> stepValueCache = new HashMap<>();
 
     public static PsiElement findStepImpl(SpecStep step, Module module) {
         if (module == null) {
@@ -91,11 +111,12 @@ public class StepUtil {
             return null;
         }
         for (PsiElement psiElement : psiFile.getChildren()) {
-            boolean isConcept = psiElement.getClass().equals(ConceptConceptImpl.class);
             if (psiElement.getClass().equals(ConceptConceptImpl.class)) {
                 StepValue conceptStepValue = ((ConceptConceptImpl) psiElement).getStepValue();
-                if (isConcept && step.getStepValue().getStepText().equals(conceptStepValue.getStepText()))
+
+                if (step.getStepValue().getStepText().equals(conceptStepValue.getStepText())) {
                     return psiElement;
+                }
             }
         }
         return null;
@@ -103,7 +124,7 @@ public class StepUtil {
 
     private static VirtualFile[] findConceptFiles(Module module) {
         Collection<VirtualFile> conceptFiles = FilenameIndex.getAllFilesByExt(module.getProject(), Constants.CONCEPT_EXTENSION);
-        return conceptFiles.toArray(new VirtualFile[conceptFiles.size()]);
+        return conceptFiles.toArray(new VirtualFile[0]);
     }
 
     private static PsiMethod findStepImplementationMethod(Collection<PsiMethod> stepMethods, SpecStep step, Module module) {
@@ -151,13 +172,13 @@ public class StepUtil {
         }
         PsiAnnotationMemberValue attributeValue = annotation.findAttributeValue("value");
         Object value = JavaPsiFacade.getInstance(annotation.getProject()).getConstantEvaluationHelper().computeConstantExpression(attributeValue);
-        if (value != null && value instanceof String) {
+        if (value instanceof String) {
             values.add((String) value);
         } else if (attributeValue instanceof PsiArrayInitializerMemberValue) {
             PsiAnnotationMemberValue[] memberValues = ((PsiArrayInitializerMemberValue) attributeValue).getInitializers();
             for (PsiAnnotationMemberValue memberValue : memberValues) {
                 Object val = JavaPsiFacade.getInstance(annotation.getProject()).getConstantEvaluationHelper().computeConstantExpression(memberValue);
-                if (val != null && val instanceof String) {
+                if (val instanceof String) {
                     values.add((String) val);
                 }
             }
@@ -186,16 +207,15 @@ public class StepUtil {
         return findStepImpl(step, module) != null;
     }
 
-    public static boolean isStep(PsiElement element) {
+    public static boolean isStep(@Nullable PsiElement element) {
         return element instanceof SpecStepImpl;
     }
 
-    public static boolean isConcept(PsiElement element) {
+    public static boolean isConcept(@Nullable PsiElement element) {
         return element instanceof ConceptStepImpl;
     }
 
     public static boolean isMethod(PsiElement element) {
         return element instanceof PsiMethod;
     }
-
 }

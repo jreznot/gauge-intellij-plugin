@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.execution;
 
@@ -12,6 +22,7 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.application.ApplicationConfiguration;
 import com.intellij.execution.application.ApplicationConfigurationType;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
+import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.LocatableConfigurationBase;
 import com.intellij.execution.configurations.RunConfiguration;
@@ -42,7 +53,8 @@ import java.util.Map;
 import static com.thoughtworks.gauge.execution.GaugeDebugInfo.isDebugExecution;
 
 public class GaugeRunConfiguration extends LocatableConfigurationBase implements RunProfileWithCompileBeforeLaunchOption {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeRunConfiguration");
+    private static final Logger LOG = Logger.getInstance(GaugeRunConfiguration.class);
+
     public static final String TEST_RUNNER_SUPPORT_VERSION = "0.9.2";
     private String specsToExecute;
     private Module module;
@@ -54,7 +66,7 @@ public class GaugeRunConfiguration extends LocatableConfigurationBase implements
     private String rowsRange;
     private String moduleName;
 
-    public GaugeRunConfiguration(String name, Project project, ConfigurationFactoryEx configurationFactory) {
+    public GaugeRunConfiguration(String name, Project project, ConfigurationFactory configurationFactory) {
         super(project, configurationFactory, name);
         this.programParameters = new ApplicationConfiguration(name, project, ApplicationConfigurationType.getInstance());
     }

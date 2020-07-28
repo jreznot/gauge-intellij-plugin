@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.execution.runner.processors;
 
@@ -23,7 +33,7 @@ public class SpecEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) throws ParseException {
+    protected Boolean onStart(ExecutionEvent event) throws ParseException {
         if (getCache().getCurrentId() == SuiteEventProcessor.SUITE_ID) getProcessor().processLineBreak();
         getCache().setId(event.id);
         if (getCache().getId(event.id.split(Constants.SPEC_SCENARIO_DELIMITER)[0]) == null)
@@ -34,7 +44,7 @@ public class SpecEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) throws ParseException {
+    protected Boolean onEnd(ExecutionEvent event) throws ParseException {
         super.addHooks(event, BEFORE_SPEC, AFTER_SPEC, event.id, getCache().getId(event.id));
         ServiceMessageBuilder msg = ServiceMessageBuilder.testSuiteFinished(event.name);
         msg.addAttribute("duration", String.valueOf(event.result.time));
@@ -42,7 +52,7 @@ public class SpecEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    public Boolean canProcess(ExecutionEvent event) throws ParseException {
+    public Boolean canProcess(ExecutionEvent event) {
         return event.type.equalsIgnoreCase(ExecutionEvent.SPEC_START) ||
                 event.type.equalsIgnoreCase(ExecutionEvent.SPEC_END);
     }

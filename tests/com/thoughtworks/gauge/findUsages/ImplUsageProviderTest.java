@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.findUsages;
 
 import com.intellij.psi.*;
@@ -16,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 public class ImplUsageProviderTest {
     @Test
-    public void TestIsImplicitUsageWithNoModule() throws Exception {
+    public void TestIsImplicitUsageWithNoModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
 
         boolean isUsed = new ImplUsageProvider(null, helper).isImplicitUsage(mock(PsiElement.class));
@@ -25,7 +41,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageWithNoElement() throws Exception {
+    public void TestIsImplicitUsageWithNoElement() {
         ModuleHelper helper = mock(ModuleHelper.class);
 
         boolean isUsed = new ImplUsageProvider(null, helper).isImplicitUsage(null);
@@ -34,7 +50,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForClass() throws Exception {
+    public void TestIsImplicitUsageForClass() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiClass c = mock(PsiClassImpl.class);
         PsiMethod method = mock(PsiMethod.class);
@@ -52,7 +68,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForClassWithNoMethods() throws Exception {
+    public void TestIsImplicitUsageForClassWithNoMethods() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiClass c = mock(PsiClassImpl.class);
         when(helper.isGaugeModule(c)).thenReturn(true);
@@ -64,7 +80,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForMethodParameter() throws Exception {
+    public void TestIsImplicitUsageForMethodParameter() {
         ModuleHelper helper = mock(ModuleHelper.class);
         SpecStep element = mock(SpecStepImpl.class);
         PsiParameter parameter = mock(PsiParameterImpl.class);
@@ -77,7 +93,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForHook() throws Exception {
+    public void TestIsImplicitUsageForHook() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiMethod method = mock(PsiMethod.class);
 
@@ -94,7 +110,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForNonGaugeElement() throws Exception {
+    public void TestIsImplicitUsageForNonGaugeElement() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiMethod method = mock(PsiMethod.class);
 

@@ -22,7 +22,7 @@ public class SpecTableHeaderImpl extends ASTWrapperPsiElement implements SpecTab
     @Override
     public List<String> getHeaders() {
         List<PsiElement> headers = findChildrenByType(SpecTokenTypes.TABLE_HEADER);
-        List<String> headerValue = new ArrayList<String>();
+        List<String> headerValue = new ArrayList<>();
         for (PsiElement header : headers) {
             headerValue.add(header.getText().trim());
         }

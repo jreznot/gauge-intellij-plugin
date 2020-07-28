@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.rename;
 
 import com.intellij.openapi.editor.Editor;
@@ -16,10 +32,11 @@ public class RefactoringDialog extends DialogWrapper {
     private JPanel contentPane;
     private JLabel heading;
     private JLabel infoPane;
-    private Project project;
-    private PsiFile file;
-    private Editor editor;
-    private String text;
+
+    private final Project project;
+    private final PsiFile file;
+    private final Editor editor;
+    private final String text;
 
     @Nullable
     @Override

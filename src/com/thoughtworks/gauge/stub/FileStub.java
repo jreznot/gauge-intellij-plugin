@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.stub;
 
 import com.intellij.openapi.fileTypes.FileType;
@@ -6,7 +22,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Consumer;
-import com.intellij.util.indexing.*;
+import com.intellij.util.indexing.DataIndexer;
+import com.intellij.util.indexing.FileBasedIndex;
+import com.intellij.util.indexing.FileBasedIndexExtension;
+import com.intellij.util.indexing.FileContent;
+import com.intellij.util.indexing.FileContentImpl;
+import com.intellij.util.indexing.ID;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.IOUtil;
 import com.intellij.util.io.KeyDescriptor;
@@ -24,11 +45,15 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FileStub extends FileBasedIndexExtension<String, Set<Integer>> {
     @NonNls
-    public static final ID<String, Set<Integer>> NAME = ID.create("FormClassIndex");
+    public static final ID<String, Set<Integer>> NAME = ID.create("GaugeFileStubIndex");
 
     @NotNull
     @Override
@@ -44,7 +69,8 @@ public class FileStub extends FileBasedIndexExtension<String, Set<Integer>> {
             List<PsiElement> steps = new ArrayList<>();
             PsiFile psiFile;
             try {
-                psiFile = ((FileContentImpl) fileContent).createFileFromText(FileUtils.readFileToString(new File(fileContent.getFile().getPath()), Constants.FILE_ENCODING));
+                String text = FileUtils.readFileToString(new File(fileContent.getFile().getPath()), Constants.FILE_ENCODING);
+                psiFile = ((FileContentImpl) fileContent).createFileFromText(text);
             } catch (IOException e) {
                 return Collections.emptyMap();
             }
@@ -113,9 +139,9 @@ public class FileStub extends FileBasedIndexExtension<String, Set<Integer>> {
     public FileBasedIndex.InputFilter getInputFilter() {
         return new FileBasedIndex.FileTypeSpecificInputFilter() {
             @Override
-            public void registerFileTypesUsedForIndexing(@NotNull Consumer<FileType> consumer) {
-                consumer.consume(SpecFileType.INSTANCE);
-                consumer.consume(ConceptFileType.INSTANCE);
+            public void registerFileTypesUsedForIndexing(@NotNull Consumer<? super FileType> fileTypeSink) {
+                fileTypeSink.consume(SpecFileType.INSTANCE);
+                fileTypeSink.consume(ConceptFileType.INSTANCE);
             }
 
             @Override

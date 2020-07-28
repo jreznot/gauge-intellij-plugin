@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.undo;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -14,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +38,8 @@ import java.util.Map;
 import static com.intellij.openapi.vfs.LocalFileSystem.getInstance;
 
 public class UndoHandler {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.undo.UndoHandler");
+    private static final Logger LOG = Logger.getInstance(UndoHandler.class);
+
     private final List<String> fileNames;
     private final Project project;
     private final String name;
@@ -55,9 +73,11 @@ public class UndoHandler {
 
 
     private void runWriteAction() {
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            CommandProcessor.getInstance().executeCommand(project, () -> performUndoableAction(fileNames), name, name);
-        });
+        ApplicationManager.getApplication().runWriteAction(() ->
+                CommandProcessor.getInstance().executeCommand(project, () ->
+                        performUndoableAction(fileNames), name, name
+                )
+        );
     }
 
     private void performUndoableAction(List<String> filesChangedList) {
@@ -67,12 +87,13 @@ public class UndoHandler {
                 if (virtualFile != null) {
                     Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
                     getInstance().refreshAndFindFileByIoFile(new File(fileName));
-                    if (document != null)
-                        document.setText(StringUtils.join(FileUtils.readLines(new File(fileName), EncodingManager.getInstance().getEncoding(virtualFile, true).toString()).toArray(), "\n"));
+                    if (document != null) {
+                        Charset encoding = EncodingManager.getInstance().getEncoding(virtualFile, true);
+                        document.setText(StringUtils.join(FileUtils.readLines(new File(fileName), encoding.toString()).toArray(), "\n"));
+                    }
                 }
-            } catch (Exception ignored) {
-                LOG.debug(ignored);
+            } catch (Exception ex) {
+                LOG.debug(ex);
             }
     }
-
 }

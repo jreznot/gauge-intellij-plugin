@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.rename;
 
@@ -10,7 +20,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -25,14 +34,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.thoughtworks.gauge.util.StepUtil.*;
+import static com.thoughtworks.gauge.util.StepUtil.isConcept;
+import static com.thoughtworks.gauge.util.StepUtil.isMethod;
+import static com.thoughtworks.gauge.util.StepUtil.isStep;
 
 public class CustomRenameHandler implements RenameHandler {
 
     private PsiElement psiElement;
     private Editor editor;
 
-    public boolean isAvailableOnDataContext(DataContext dataContext) {
+    public boolean isAvailableOnDataContext(@NotNull DataContext dataContext) {
         PsiElement element = CommonDataKeys.PSI_ELEMENT.getData(dataContext);
         Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
         VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
@@ -45,12 +56,12 @@ public class CustomRenameHandler implements RenameHandler {
             PsiFile data = CommonDataKeys.PSI_FILE.getData(dataContext);
             if (data == null) return false;
             psiElement = getStepElement(data.findElementAt(offset));
-            return psiElement != null && (isConcept(psiElement) || isStep(psiElement));
+            return isConcept(psiElement) || isStep(psiElement);
         }
         return CommonDataKeys.PROJECT.getData(dataContext) != null && (isMethod(element) || isConcept(element) || isStep(element));
     }
 
-    public boolean isRenaming(DataContext dataContext) {
+    public boolean isRenaming(@NotNull DataContext dataContext) {
         return isAvailableOnDataContext(dataContext);
     }
 
@@ -67,7 +78,7 @@ public class CustomRenameHandler implements RenameHandler {
                 return;
             } else if (values.size() == 1)
                 text = values.get(0);
-            else if (values.size() > 1) {
+            else {
                 Messages.showWarningDialog("Refactoring for steps having aliases are not supported", "Warning");
                 return;
             }

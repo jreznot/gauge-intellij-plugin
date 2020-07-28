@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.markdownPreview;
 
 import com.intellij.ide.browsers.OpenInBrowserRequest;
@@ -16,6 +32,7 @@ import com.thoughtworks.gauge.language.ConceptFileType;
 import com.thoughtworks.gauge.language.SpecFileType;
 import com.thoughtworks.gauge.settings.GaugeSettingsModel;
 import com.thoughtworks.gauge.util.GaugeUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -26,10 +43,10 @@ import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 public class GaugeWebBrowserPreview extends WebBrowserUrlProvider {
     private static File tempDirectory;
 
-
     private static File createOrGetTempDirectory(String projectName) throws IOException {
-        if (tempDirectory == null)
+        if (tempDirectory == null) {
             tempDirectory = FileUtil.createTempDirectory(projectName, null, true);
+        }
         return tempDirectory;
     }
 
@@ -41,7 +58,7 @@ public class GaugeWebBrowserPreview extends WebBrowserUrlProvider {
 
     @Nullable
     @Override
-    protected Url getUrl(OpenInBrowserRequest request, VirtualFile virtualFile) throws BrowserException {
+    protected Url getUrl(@NotNull OpenInBrowserRequest request, @NotNull VirtualFile virtualFile) {
         try {
             if (!request.isAppendAccessToken()) return null;
             GaugeSettingsModel settings = getGaugeSettings();
@@ -67,10 +84,11 @@ public class GaugeWebBrowserPreview extends WebBrowserUrlProvider {
         int exitCode = docsProcess.waitFor();
         if (exitCode != 0) {
             String docsOutput = String.format("<pre>%s</pre>", GaugeUtil.getOutput(docsProcess.getInputStream(), " ").replace("<", "&lt;").replace(">", "&gt;"));
-            Notifications.Bus.notify(new Notification("Specification Preview", "Error: Specification Preview", docsOutput, NotificationType.ERROR));
+            Notifications.Bus.notify(new Notification("Specification Preview", "Error: specification preview", docsOutput, NotificationType.ERROR));
             return null;
         }
         String relativePath = FileUtil.getRelativePath(gaugeModuleDir, new File(virtualFile.getParent().getPath()));
-        return new UrlImpl(FileUtil.join(createOrGetTempDirectory(projectName).getPath(), "docs", "html", relativePath, virtualFile.getNameWithoutExtension() + ".html"));
+        return new UrlImpl(FileUtil.join(createOrGetTempDirectory(projectName).getPath(), "docs", "html", relativePath,
+                virtualFile.getNameWithoutExtension() + ".html"));
     }
 }
