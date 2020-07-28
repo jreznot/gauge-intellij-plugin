@@ -113,9 +113,9 @@ public class FileStub extends FileBasedIndexExtension<String, Set<Integer>> {
     public FileBasedIndex.InputFilter getInputFilter() {
         return new FileBasedIndex.FileTypeSpecificInputFilter() {
             @Override
-            public void registerFileTypesUsedForIndexing(@NotNull Consumer<FileType> consumer) {
-                consumer.consume(SpecFileType.INSTANCE);
-                consumer.consume(ConceptFileType.INSTANCE);
+            public void registerFileTypesUsedForIndexing(@NotNull Consumer<? super FileType> fileTypeSink) {
+                fileTypeSink.consume(SpecFileType.INSTANCE);
+                fileTypeSink.consume(ConceptFileType.INSTANCE);
             }
 
             @Override
