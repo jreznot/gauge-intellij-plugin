@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class SocketUtils {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.util.SocketUtils");
+    private static final Logger LOG = Logger.getInstance(SocketUtils.class);
+
     public static int findFreePortForApi() {
         ServerSocket socket = null;
         try {

@@ -22,17 +22,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class GaugeExceptionHandler extends Thread {
+    private static final Logger LOG = Logger.getInstance(GaugeExceptionHandler.class);
 
     private static final String LINE_BREAK = "\n";
     private static final String NOTIFICATION_TEMPLATE = "More details...<br><br>%s%s";
     private static final String NOTIFICATION_TITLE = "Exception occurred in Gauge plugin";
     private static final String ISSUE_TEMPLATE = "\n\nPlease log an issue in https://github.com/getgauge/intellij-plugin with following details:<br><br>" +
-            "#### gauge process exited with code %d"+
+            "#### gauge process exited with code %d" +
             "<pre>```%s```" +
             "\n* Idea version: %s\n* API version: %s\n* Plugin version: %s\n* Gauge version: %s</pre>";
     private final Process process;
     private final Project project;
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.core.GaugeExceptionHandler");
 
     public GaugeExceptionHandler(Process process, Project project) {
         this.process = process;
@@ -67,7 +67,7 @@ public class GaugeExceptionHandler extends Thread {
         String apiVersion = ApplicationInfo.getInstance().getApiVersion();
         String ideaVersion = ApplicationInfo.getInstance().getFullVersion();
         String gaugeVersion = GaugeVersion.getVersion(false).version;
-        String body = String.format(ISSUE_TEMPLATE, exitValue,stacktrace, ideaVersion, apiVersion, pluginVersion, gaugeVersion);
+        String body = String.format(ISSUE_TEMPLATE, exitValue, stacktrace, ideaVersion, apiVersion, pluginVersion, gaugeVersion);
         String content = String.format(NOTIFICATION_TEMPLATE, LINE_BREAK, body);
         return new Notification("Gauge Exception", NOTIFICATION_TITLE, content, NotificationType.ERROR, NotificationListener.URL_OPENING_LISTENER);
     }

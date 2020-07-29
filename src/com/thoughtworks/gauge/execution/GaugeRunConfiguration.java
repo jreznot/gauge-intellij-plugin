@@ -42,7 +42,8 @@ import java.util.Map;
 import static com.thoughtworks.gauge.execution.GaugeDebugInfo.isDebugExecution;
 
 public class GaugeRunConfiguration extends LocatableConfigurationBase implements RunProfileWithCompileBeforeLaunchOption {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeRunConfiguration");
+    private static final Logger LOG = Logger.getInstance(GaugeRunConfiguration.class);
+
     public static final String TEST_RUNNER_SUPPORT_VERSION = "0.9.2";
     private String specsToExecute;
     private Module module;

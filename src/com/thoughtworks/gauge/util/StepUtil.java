@@ -101,11 +101,12 @@ public class StepUtil {
             return null;
         }
         for (PsiElement psiElement : psiFile.getChildren()) {
-            boolean isConcept = psiElement.getClass().equals(ConceptConceptImpl.class);
             if (psiElement.getClass().equals(ConceptConceptImpl.class)) {
                 StepValue conceptStepValue = ((ConceptConceptImpl) psiElement).getStepValue();
-                if (isConcept && step.getStepValue().getStepText().equals(conceptStepValue.getStepText()))
+
+                if (step.getStepValue().getStepText().equals(conceptStepValue.getStepText())) {
                     return psiElement;
+                }
             }
         }
         return null;
@@ -113,7 +114,7 @@ public class StepUtil {
 
     private static VirtualFile[] findConceptFiles(Module module) {
         Collection<VirtualFile> conceptFiles = FilenameIndex.getAllFilesByExt(module.getProject(), Constants.CONCEPT_EXTENSION);
-        return conceptFiles.toArray(new VirtualFile[conceptFiles.size()]);
+        return conceptFiles.toArray(new VirtualFile[0]);
     }
 
     private static PsiMethod findStepImplementationMethod(Collection<PsiMethod> stepMethods, SpecStep step, Module module) {
@@ -161,13 +162,13 @@ public class StepUtil {
         }
         PsiAnnotationMemberValue attributeValue = annotation.findAttributeValue("value");
         Object value = JavaPsiFacade.getInstance(annotation.getProject()).getConstantEvaluationHelper().computeConstantExpression(attributeValue);
-        if (value != null && value instanceof String) {
+        if (value instanceof String) {
             values.add((String) value);
         } else if (attributeValue instanceof PsiArrayInitializerMemberValue) {
             PsiAnnotationMemberValue[] memberValues = ((PsiArrayInitializerMemberValue) attributeValue).getInitializers();
             for (PsiAnnotationMemberValue memberValue : memberValues) {
                 Object val = JavaPsiFacade.getInstance(annotation.getProject()).getConstantEvaluationHelper().computeConstantExpression(memberValue);
-                if (val != null && val instanceof String) {
+                if (val instanceof String) {
                     values.add((String) val);
                 }
             }
@@ -207,5 +208,4 @@ public class StepUtil {
     public static boolean isMethod(PsiElement element) {
         return element instanceof PsiMethod;
     }
-
 }

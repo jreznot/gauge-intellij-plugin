@@ -18,7 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtractConceptRequest {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.extract.ExtractConceptRequest");
+    private static final Logger LOG = Logger.getInstance(ExtractConceptRequest.class);
+
     private List<Api.step> steps;
     private final String fileName;
     private final Api.step concept;

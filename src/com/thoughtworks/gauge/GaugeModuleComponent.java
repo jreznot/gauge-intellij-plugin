@@ -34,7 +34,7 @@ import static com.thoughtworks.gauge.util.GaugeUtil.moduleDir;
  */
 public class GaugeModuleComponent implements ModuleComponent {
     private final Module module;
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.GaugeModuleComponent");
+    private static final Logger LOG = Logger.getInstance(GaugeModuleComponent.class);
 
     public GaugeModuleComponent(Module module) {
         this.module = module;
@@ -111,6 +111,7 @@ public class GaugeModuleComponent implements ModuleComponent {
 
     /**
      * Sets the type of the given module to that of a Gauge module
+     *
      * @param module the module to be set
      */
     public static void makeGaugeModuleType(Module module) {
@@ -120,6 +121,7 @@ public class GaugeModuleComponent implements ModuleComponent {
     /**
      * Returns whether the module is a Gauge module. A module is a Gauge module if either its module type name
      * indicates that it is a Gauge module, or if it is a Gauge project.
+     *
      * @param module the module to be examined
      * @return whether the module is a Gauge module.
      */
@@ -130,6 +132,7 @@ public class GaugeModuleComponent implements ModuleComponent {
     /**
      * Returns whether or not the module is a Gauge project. A module is a Gauge project if the module is also a
      * Gauge project directory (i.e. it has a `specs` directory and other required components).
+     *
      * @param module the module to be examined
      * @return whether or not the module is a Gauge project
      */

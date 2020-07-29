@@ -55,7 +55,6 @@ public class GaugeExecutionProducer extends RunConfigurationProducer<RunConfigur
             return true;
         } catch (Exception ex) {
             LOG.debug(ex);
-            ex.printStackTrace();
         }
         return true;
     }

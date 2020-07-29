@@ -24,7 +24,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
 public class GaugeRunProcessHandler extends ColoredProcessHandler {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeRunProcessHandler");
+    private static final Logger LOG = Logger.getInstance(GaugeRunProcessHandler.class);
+
     private GaugeRunProcessHandler(Process process, String commandLineString) {
         super(process, commandLineString);
     }
@@ -57,6 +58,7 @@ public class GaugeRunProcessHandler extends ColoredProcessHandler {
             // Trying to connect to gauge java for 25 secs. The sleep is because it may take a few seconds for gauge to launch the java process and the jvm to load after that
             while (!debuggerConnected && ((System.currentTimeMillis() - startTime) < 25000)) {
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(5000);
                     basicProgramRunner.execute(environment);
                     debuggerConnected = true;

@@ -178,7 +178,7 @@ public class CreateStepImplFix extends BaseIntentionAction {
                 PsiDocumentManager.getInstance(project).commitAllDocuments();
 
                 StepValue stepValue = step.getStepValue();
-                final StringBuilder text = new StringBuilder(String.format("@" + Step.class.getName() + "(\"%s\")\n", stepValue.getStepAnnotationText()));
+                StringBuilder text = new StringBuilder(String.format("@" + Step.class.getName() + "(\"%s\")\n", stepValue.getStepAnnotationText()));
                 text.append(String.format("public void %s(%s){\n\n", getMethodName(psiClass), getParamList(stepValue.getParameters())));
                 text.append("}\n");
                 final PsiMethod stepMethod = JavaPsiFacade.getElementFactory(project).createMethodFromText(text.toString(), psiClass);
@@ -234,7 +234,6 @@ public class CreateStepImplFix extends BaseIntentionAction {
                 }
             }
         });
-
     }
 
     @NotNull
