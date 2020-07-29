@@ -15,9 +15,8 @@ import com.thoughtworks.gauge.stub.FileStub;
 import java.util.*;
 
 public class StepCollector {
-
-    private Project project;
-    private HashMap<String, List<PsiElement>> stepTextToElement;
+    private final Project project;
+    private final HashMap<String, List<PsiElement>> stepTextToElement;
 
     public StepCollector(Project project) {
         this.project = project;

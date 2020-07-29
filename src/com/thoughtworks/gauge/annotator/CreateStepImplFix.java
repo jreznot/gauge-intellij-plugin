@@ -13,7 +13,12 @@ import com.intellij.codeInsight.template.TemplateBuilder;
 import com.intellij.codeInsight.template.TemplateBuilderFactory;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionPlaces;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
@@ -28,7 +33,19 @@ import com.intellij.openapi.ui.popup.PopupStep;
 import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiCodeBlock;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiIdentifier;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiParameterList;
+import com.intellij.psi.PsiTypeElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -45,7 +62,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateStepImplFix extends BaseIntentionAction {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.annotator.CreateStepImplFix");
+    private static final Logger LOG = Logger.getInstance(CreateStepImplFix.class);
+
     private static final PsiFile NEW_FILE_HOLDER = null;
     public static final String IMPLEMENTATION = "implementation";
     private final SpecStep step;
@@ -63,7 +81,7 @@ public class CreateStepImplFix extends BaseIntentionAction {
     @NotNull
     @Override
     public String getFamilyName() {
-        return "Step Implementation";
+        return "Step implementation";
     }
 
     @Override
@@ -82,14 +100,14 @@ public class CreateStepImplFix extends BaseIntentionAction {
                         .flatMap(List::stream)
                         .collect(Collectors.toList());
                 javaFiles.add(0, NEW_FILE_HOLDER);
-                ListPopup stepImplChooser = JBPopupFactory.getInstance().createListPopup(new BaseListPopupStep<PsiFile>("Choose implementation class", javaFiles) {
+                ListPopup stepImplChooser = JBPopupFactory.getInstance().createListPopup(new BaseListPopupStep<PsiFile>("Choose Implementation Class", javaFiles) {
                     @Override
                     public boolean isSpeedSearchEnabled() {
                         return true;
                     }
 
                     @Override
-                    public PopupStep onChosen(final PsiFile selectedValue, boolean finalChoice) {
+                    public PopupStep<?> onChosen(final PsiFile selectedValue, boolean finalChoice) {
                         return doFinalStep(() -> {
                             if (selectedValue == NEW_FILE_HOLDER) {
                                 createFileAndAddImpl(editor);
@@ -141,30 +159,26 @@ public class CreateStepImplFix extends BaseIntentionAction {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                new WriteCommandAction.Simple(project) {
-                    @Override
-                    protected void run() throws Throwable {
-                        PsiFile psifile = PsiManager.getInstance(project).findFile(file);
-                        if (!FileModificationService.getInstance().prepareFileForWrite(psifile)) {
-                            return;
-                        }
-                        PsiMethod addedStepImpl = addStepImplMethod(psifile);
-                        final TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(addedStepImpl);
-                        templateMethodName(addedStepImpl, builder);
-                        templateParams(addedStepImpl, builder);
-                        templateBody(addedStepImpl, builder);
-                        userTemplateModify(builder);
+                WriteCommandAction.runWriteCommandAction(project, () -> {
+                    PsiFile psifile = PsiManager.getInstance(project).findFile(file);
+                    if (!FileModificationService.getInstance().prepareFileForWrite(psifile)) {
+                        return;
                     }
-                }.execute();
+                    PsiMethod addedStepImpl = addStepImplMethod(psifile);
+                    final TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(addedStepImpl);
+                    templateMethodName(addedStepImpl, builder);
+                    templateParams(addedStepImpl, builder);
+                    templateBody(addedStepImpl, builder);
+                    userTemplateModify(builder);
+                });
             }
 
             private PsiMethod addStepImplMethod(PsiFile psifile) {
-
                 final PsiClass psiClass = PsiTreeUtil.getChildOfType(psifile, PsiClass.class);
                 PsiDocumentManager.getInstance(project).commitAllDocuments();
 
                 StepValue stepValue = step.getStepValue();
-                final StringBuilder text = new StringBuilder(String.format("@"+ Step.class.getName() +"(\"%s\")\n", stepValue.getStepAnnotationText()));
+                final StringBuilder text = new StringBuilder(String.format("@" + Step.class.getName() + "(\"%s\")\n", stepValue.getStepAnnotationText()));
                 text.append(String.format("public void %s(%s){\n\n", getMethodName(psiClass), getParamList(stepValue.getParameters())));
                 text.append("}\n");
                 final PsiMethod stepMethod = JavaPsiFacade.getElementFactory(project).createMethodFromText(text.toString(), psiClass);
@@ -226,15 +240,14 @@ public class CreateStepImplFix extends BaseIntentionAction {
     @NotNull
     private String getMethodName(PsiClass psiClass) {
         try {
-            for (Integer i = 1, length = psiClass.getAllMethods().length; i < length; i++) {
-                String methodName = IMPLEMENTATION + i.toString();
+            for (int i = 1, length = psiClass.getAllMethods().length; i < length; i++) {
+                String methodName = IMPLEMENTATION + Integer.toString(i);
                 if (psiClass.findMethodsByName(methodName, true).length == 0)
                     return methodName;
             }
-        } catch (Exception ignored) {
-            LOG.debug(ignored);
+        } catch (Exception ex) {
+            LOG.debug(ex);
         }
         return IMPLEMENTATION;
     }
-
 }

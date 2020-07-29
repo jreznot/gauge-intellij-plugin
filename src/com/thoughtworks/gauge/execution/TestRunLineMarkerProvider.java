@@ -9,15 +9,15 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
 import com.thoughtworks.gauge.helper.ModuleHelper;
 import com.thoughtworks.gauge.language.token.SpecTokenTypes;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-
 public class TestRunLineMarkerProvider extends RunLineMarkerContributor {
     private static final Function<PsiElement, String> TOOLTIP_PROVIDER = psiElement -> "Run Element";
-    private ModuleHelper helper;
+    private final ModuleHelper helper;
 
     public TestRunLineMarkerProvider(ModuleHelper helper) {
         this.helper = helper;
@@ -29,7 +29,7 @@ public class TestRunLineMarkerProvider extends RunLineMarkerContributor {
 
     @Nullable
     @Override
-    public Info getInfo(PsiElement psiElement) {
+    public Info getInfo(@NotNull PsiElement psiElement) {
         if (!this.helper.isGaugeModule(psiElement)) return null;
         List<IElementType> types = Arrays.asList(SpecTokenTypes.SPEC_HEADING, SpecTokenTypes.SCENARIO_HEADING);
         if (psiElement instanceof LeafPsiElement && types.contains(((LeafPsiElement) psiElement).getElementType()))

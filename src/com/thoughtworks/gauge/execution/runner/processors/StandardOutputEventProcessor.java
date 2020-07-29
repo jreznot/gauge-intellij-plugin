@@ -12,12 +12,12 @@ public class StandardOutputEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) {
+    protected Boolean onStart(ExecutionEvent event) {
         return true;
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) {
+    protected Boolean onEnd(ExecutionEvent event) {
         getProcessor().process(StringUtils.appendIfMissing(event.message, "\n"));
         getProcessor().processLineBreak();
         return true;

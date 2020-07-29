@@ -16,22 +16,19 @@ import com.thoughtworks.gauge.settings.GaugeSettingsModel;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
 import static com.intellij.openapi.vcs.VcsNotifier.STANDARD_NOTIFICATION;
 
 class Spectacle {
     private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.markdownPreview.Spectacle");
     public static final String NAME = "spectacle";
     private final Project project;
-    private GaugeSettingsModel settings;
+    private final GaugeSettingsModel settings;
     private static boolean installing = false;
 
     Spectacle(Project project, GaugeSettingsModel settings) {
         this.project = project;
         this.settings = settings;
     }
-
 
     private void install() {
         if (installing) {
@@ -62,7 +59,7 @@ class Spectacle {
         });
     }
 
-    boolean isInstalled() throws IOException, InterruptedException {
+    boolean isInstalled() {
         return GaugeVersion.getVersion(true).isPluginInstalled(NAME);
     }
 

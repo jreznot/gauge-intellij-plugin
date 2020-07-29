@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestsCache {
-    private Map<String, Integer> idCache = new HashMap<>();
+    private final Map<String, Integer> idCache = new HashMap<>();
     private Integer id = 0;
 
     public Integer getId(String key) {

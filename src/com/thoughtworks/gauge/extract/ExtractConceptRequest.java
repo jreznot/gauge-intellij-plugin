@@ -82,9 +82,9 @@ public class ExtractConceptRequest {
         if (gaugeService != null)
             try {
                 return gaugeService.getGaugeConnection().sendGetExtractConceptRequest(steps, concept, refactorOtherUsages, fileName, textInfo);
-            } catch (Exception ignored) {
+            } catch (Exception ex) {
                 message = "Something went wrong during extract concept request.";
-                LOG.debug(ignored);
+                LOG.debug(ex);
             }
         return Api.ExtractConceptResponse.newBuilder().setIsSuccess(false).setError(message).build();
     }

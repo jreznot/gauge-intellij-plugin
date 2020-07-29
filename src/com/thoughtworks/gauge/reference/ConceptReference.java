@@ -20,7 +20,6 @@ import static com.thoughtworks.gauge.util.GaugeUtil.moduleForPsiElement;
 
 public class ConceptReference extends PsiReferenceBase<ConceptStep> {
 
-
     public ConceptReference(@NotNull ConceptStep element) {
         super(element);
     }
@@ -40,12 +39,12 @@ public class ConceptReference extends PsiReferenceBase<ConceptStep> {
     }
 
     @Override
-    public TextRange getRangeInElement() {
+    public @NotNull TextRange getRangeInElement() {
         return new TextRange(0, myElement.getTextLength());
     }
 
     @Override
-    public boolean isReferenceTo(PsiElement element) {
+    public boolean isReferenceTo(@NotNull PsiElement element) {
         if (element instanceof PsiMethod) {
             PsiMethod method = (PsiMethod) element;
             return StepUtil.isMatch(method, this.myElement.getStepValue().getStepText(), moduleForPsiElement(element));
@@ -53,5 +52,4 @@ public class ConceptReference extends PsiReferenceBase<ConceptStep> {
             return false;
         }
     }
-
 }

@@ -20,7 +20,7 @@ import java.awt.*;
 import java.util.List;
 
 public class ReferenceSearch extends QueryExecutorBase<PsiReference, ReferencesSearch.SearchParameters> {
-    private ReferenceSearchHelper helper;
+    private final ReferenceSearchHelper helper;
 
     public ReferenceSearch(ReferenceSearchHelper helper) {
         super();

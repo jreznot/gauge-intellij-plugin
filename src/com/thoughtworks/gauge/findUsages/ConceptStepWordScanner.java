@@ -11,9 +11,11 @@ import com.intellij.psi.tree.TokenSet;
 import com.thoughtworks.gauge.language.token.ConceptTokenTypes;
 import com.thoughtworks.gauge.lexer.ConceptLexer;
 
-
 public class ConceptStepWordScanner extends DefaultWordsScanner {
     public ConceptStepWordScanner() {
-        super(new ConceptLexer(), TokenSet.create(ConceptTokenTypes.STEP), TokenSet.create(ConceptTokenTypes.COMMENT), TokenSet.create(ConceptTokenTypes.STEP));
+        super(new ConceptLexer(),
+                TokenSet.create(ConceptTokenTypes.STEP),
+                TokenSet.create(ConceptTokenTypes.COMMENT),
+                TokenSet.create(ConceptTokenTypes.STEP));
     }
 }

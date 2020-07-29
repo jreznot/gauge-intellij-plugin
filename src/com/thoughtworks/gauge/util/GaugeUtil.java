@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
 import java.util.Map;
 
 public class GaugeUtil {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.GaugeUtil");
+    private static final Logger LOG = Logger.getInstance(GaugeUtil.class);
     private static GaugeSettingsModel gaugeSettings = null;
 
     public static GaugeSettingsModel getGaugeSettings() throws GaugeNotFoundException {
@@ -92,6 +92,7 @@ public class GaugeUtil {
     /**
      * Returns whether or not the given file is a Gauge project directory. A file is a Gauge project directory if it
      * is a directory that contains both a manifest file and a specs directory.
+     *
      * @param dir the file to be examined.
      * @return whether or not the given file is a Gauge project directory.
      */

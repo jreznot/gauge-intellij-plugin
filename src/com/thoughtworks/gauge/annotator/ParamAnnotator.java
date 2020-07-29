@@ -8,7 +8,7 @@ import com.thoughtworks.gauge.StepValue;
 import org.jetbrains.annotations.NotNull;
 
 public class ParamAnnotator implements Annotator {
-    private AnnotationHelper helper;
+    private final AnnotationHelper helper;
 
     public ParamAnnotator(AnnotationHelper helper) {
         this.helper = helper;
@@ -17,7 +17,6 @@ public class ParamAnnotator implements Annotator {
     public ParamAnnotator() {
         this.helper = new AnnotationHelper();
     }
-
 
     @Override
     public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder holder) {

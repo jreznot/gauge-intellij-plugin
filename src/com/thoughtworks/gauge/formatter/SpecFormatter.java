@@ -57,7 +57,7 @@ public class SpecFormatter extends AnAction {
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 String output = String.format("<pre>%s</pre>", GaugeUtil.getOutput(process.getInputStream(), "\n").replace("<", "&lt;").replace(">", "&gt;"));
-                Notifications.Bus.notify(new Notification("Spec Formatting", "Error: Spec Formatting", output, NotificationType.ERROR));
+                Notifications.Bus.notify(new Notification("Spec Formatting", "Error: spec formatting", output, NotificationType.ERROR));
                 return;
             }
             VirtualFileManager.getInstance().syncRefresh();

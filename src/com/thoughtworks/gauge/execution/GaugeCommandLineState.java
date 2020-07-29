@@ -25,12 +25,12 @@ import com.thoughtworks.gauge.util.GaugeUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class GaugeCommandLineState extends CommandLineState {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeCommandLineState");
+    private static final Logger LOG = Logger.getInstance(GaugeCommandLineState.class);
 
     private final GeneralCommandLine commandLine;
     private final Project project;
     private final ExecutionEnvironment env;
-    private GaugeRunConfiguration config;
+    private final GaugeRunConfiguration config;
 
     public GaugeCommandLineState(GeneralCommandLine commandLine, Project project, ExecutionEnvironment env, GaugeRunConfiguration config) {
         super(env);

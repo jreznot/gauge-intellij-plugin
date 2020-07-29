@@ -6,7 +6,6 @@
 
 package com.thoughtworks.gauge.module.lib;
 
-
 import com.intellij.openapi.module.Module;
 import com.thoughtworks.gauge.util.GaugeUtil;
 
@@ -26,14 +25,13 @@ public class LibHelperFactory {
         return LibHelperFactory.DEFAULT;
     }
 
-    private class GaugeModuleLibHelper extends AbstractLibHelper {
-
+    private static class GaugeModuleLibHelper extends AbstractLibHelper {
         public GaugeModuleLibHelper(Module module) {
             super(module);
         }
 
+        @Override
         public void checkDeps() {
-
         }
     }
 }

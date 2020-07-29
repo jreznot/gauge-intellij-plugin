@@ -28,7 +28,6 @@ public class GaugeRunTaskConfigurationType extends ConfigurationTypeBase {
         addFactory(scenarioConfigFactory);
     }
 
-
     public GaugeRunTaskConfigurationType getInstance() {
         return ContainerUtil.findInstance(Extensions.getExtensions(CONFIGURATION_TYPE_EP), GaugeRunTaskConfigurationType.class);
     }

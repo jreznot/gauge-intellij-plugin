@@ -11,17 +11,17 @@ import java.text.ParseException;
 
 abstract class GaugeEventProcessor implements EventProcessor {
     private static final String FILE_PREFIX = "gauge://";
-    private MessageProcessor processor;
-    private TestsCache cache;
+    private final MessageProcessor processor;
+    private final TestsCache cache;
 
     GaugeEventProcessor(MessageProcessor processor, TestsCache cache) {
         this.processor = processor;
         this.cache = cache;
     }
 
-    abstract Boolean onStart(ExecutionEvent event) throws ParseException;
+    protected abstract Boolean onStart(ExecutionEvent event) throws ParseException;
 
-    abstract Boolean onEnd(ExecutionEvent event) throws ParseException;
+    protected abstract Boolean onEnd(ExecutionEvent event) throws ParseException;
 
     public Boolean process(ExecutionEvent event) throws ParseException {
         return event.type.endsWith("Start") ? onStart(event) : onEnd(event);

@@ -10,6 +10,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.intellij.openapi.components.RoamingType.DISABLED;
@@ -17,7 +18,7 @@ import static com.intellij.openapi.components.RoamingType.DISABLED;
 @State(
         name = "GaugeConfiguration",
         storages = {
-                @Storage(file = "GaugeConfig.xml", roamingType = DISABLED),
+                @Storage(value = "GaugeConfig.xml", roamingType = DISABLED),
         }
 )
 public class GaugeSettingsService implements PersistentStateComponent<GaugeSettingsModel> {
@@ -30,7 +31,7 @@ public class GaugeSettingsService implements PersistentStateComponent<GaugeSetti
     }
 
     @Override
-    public void loadState(GaugeSettingsModel state) {
+    public void loadState(@NotNull GaugeSettingsModel state) {
         this.state = state;
     }
 

@@ -3,7 +3,7 @@ package com.thoughtworks.gauge.rename;
 public class RefactoringStatus {
 
     private String errorMessage;
-    private Boolean isPassed;
+    private final Boolean isPassed;
 
     public RefactoringStatus(Boolean isPassed, String errorMessage) {
         this.errorMessage = errorMessage;

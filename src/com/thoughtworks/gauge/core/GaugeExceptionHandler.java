@@ -7,7 +7,7 @@
 package com.thoughtworks.gauge.core;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
@@ -30,8 +30,8 @@ public class GaugeExceptionHandler extends Thread {
             "#### gauge process exited with code %d"+
             "<pre>```%s```" +
             "\n* Idea version: %s\n* API version: %s\n* Plugin version: %s\n* Gauge version: %s</pre>";
-    private Process process;
-    private Project project;
+    private final Process process;
+    private final Project project;
     private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.core.GaugeExceptionHandler");
 
     public GaugeExceptionHandler(Process process, Project project) {
@@ -51,8 +51,8 @@ public class GaugeExceptionHandler extends Thread {
                 LOG.debug(output);
                 Notifications.Bus.notify(createNotification(output, process.exitValue()), project);
             }
-        } catch (Exception ignored) {
-            LOG.debug(ignored);
+        } catch (Exception ex) {
+            LOG.debug(ex);
         }
     }
 
@@ -62,7 +62,7 @@ public class GaugeExceptionHandler extends Thread {
     }
 
     private Notification createNotification(String stacktrace, int exitValue) {
-        IdeaPluginDescriptor plugin = PluginManager.getPlugin(PluginId.findId("com.thoughtworks.gauge"));
+        IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.findId("com.thoughtworks.gauge"));
         String pluginVersion = plugin == null ? "" : plugin.getVersion();
         String apiVersion = ApplicationInfo.getInstance().getApiVersion();
         String ideaVersion = ApplicationInfo.getInstance().getFullVersion();

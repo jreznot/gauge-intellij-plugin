@@ -23,19 +23,19 @@ public class ConceptStepFindUsagesProvider implements FindUsagesProvider {
     }
 
     @Override
-    public boolean canFindUsagesFor(PsiElement psiElement) {
+    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
         return psiElement instanceof SpecStepImpl || psiElement instanceof ConceptStepImpl;
     }
 
     @Nullable
     @Override
-    public String getHelpId(PsiElement psiElement) {
+    public String getHelpId(@NotNull PsiElement psiElement) {
         return HelpID.FIND_OTHER_USAGES;
     }
 
     @NotNull
     @Override
-    public String getType(PsiElement psiElement) {
+    public String getType(@NotNull PsiElement psiElement) {
         if (psiElement instanceof ConceptStepImpl) return "Step";
         return "";
     }

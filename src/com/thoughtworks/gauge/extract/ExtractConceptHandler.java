@@ -18,13 +18,11 @@ import java.util.List;
 public class ExtractConceptHandler {
     private StepsBuilder builder;
     private PsiFile psiFile;
-    private Editor editor;
 
     public void invoke(@NotNull final Project project, @NotNull final Editor editor, @NotNull final PsiFile psiFile) {
         this.psiFile = psiFile;
-        this.editor = editor;
         try {
-            List<PsiElement> steps = getSteps(this.editor, this.psiFile);
+            List<PsiElement> steps = getSteps(editor, this.psiFile);
             if (steps.size() == 0)
                 throw new RuntimeException("Cannot Extract to Concept, selected text contains invalid elements");
             ExtractConceptInfoCollector collector = new ExtractConceptInfoCollector(editor, builder.getTextToTableMap(), steps, project);
@@ -41,7 +39,9 @@ public class ExtractConceptHandler {
         }
     }
 
-    private Api.ExtractConceptResponse makeExtractConceptRequest(List<PsiElement> specSteps, String fileName, String concept, boolean refactorOtherUsages, final PsiFile element) {
+    private Api.ExtractConceptResponse makeExtractConceptRequest(List<PsiElement> specSteps, String fileName,
+                                                                 String concept, boolean refactorOtherUsages,
+                                                                 PsiFile element) {
         PsiElement firstStep = specSteps.get(0);
         int startLine = StringUtil.offsetToLineNumber(psiFile.getText(), firstStep.getTextOffset()) + 1;
         PsiElement lastStep = specSteps.get(specSteps.size() - 1);

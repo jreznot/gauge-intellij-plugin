@@ -14,8 +14,7 @@ import com.thoughtworks.gauge.util.GaugeUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class ExtractConceptAction extends AnAction {
-
-    private ModuleHelper moduleHelper;
+    private final ModuleHelper moduleHelper;
 
     public ExtractConceptAction() {
         this.moduleHelper = new ModuleHelper();
@@ -42,7 +41,7 @@ public class ExtractConceptAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
         Project project = CommonDataKeys.PROJECT.getData(e.getDataContext());
-        Boolean enable = true;
+        boolean enable = true;
         if (file == null || project == null || !moduleHelper.isGaugeModule(file, project) || !GaugeUtil.isGaugeFile(file))
             enable = false;
         e.getPresentation().setEnabled(enable);

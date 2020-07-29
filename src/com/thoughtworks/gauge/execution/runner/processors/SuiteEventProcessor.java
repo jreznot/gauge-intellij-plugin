@@ -16,12 +16,12 @@ public class SuiteEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) throws ParseException {
+    protected Boolean onStart(ExecutionEvent event) throws ParseException {
         return getProcessor().processLineBreak();
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) throws ParseException {
+    protected Boolean onEnd(ExecutionEvent event) throws ParseException {
         return super.addHooks(event, BEFORE_SUITE, AFTER_SUITE, "", SUITE_ID);
     }
 

@@ -22,7 +22,7 @@ import java.io.IOException;
 import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 
 public class GaugeVersion {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.core.GaugeVersion");
+    private static final Logger LOG = Logger.getInstance(GaugeVersion.class);
     private static GaugeVersionInfo versionInfo = getVersion(true);
 
     public static GaugeVersionInfo getVersion(Boolean update) {
@@ -41,7 +41,7 @@ public class GaugeVersion {
                     Gson gson = builder.create();
                     gaugeVersionInfo = gson.fromJson(output, GaugeVersionInfo.class);
                 } catch (Exception e) {
-                    LOG.error( String.format("Unable to parse <%s %s %s> command's output.\n%s", settings.getGaugePath(), Constants.VERSION, Constants.MACHINE_READABLE, output));
+                    LOG.error(String.format("Unable to parse <%s %s %s> command's output.\n%s", settings.getGaugePath(), Constants.VERSION, Constants.MACHINE_READABLE, output));
                     Notification notification = new Notification(
                             "Error",
                             String.format("Unable to parse <%s %s %s> command's output.", settings.getGaugePath(), Constants.VERSION, Constants.MACHINE_READABLE),

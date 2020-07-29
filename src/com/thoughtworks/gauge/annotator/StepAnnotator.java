@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class StepAnnotator implements com.intellij.lang.annotation.Annotator {
 
-    private AnnotationHelper helper;
+    private final AnnotationHelper helper;
 
     public StepAnnotator(AnnotationHelper helper) {
         this.helper = helper;
@@ -41,6 +41,6 @@ public class StepAnnotator implements com.intellij.lang.annotation.Annotator {
         if (helper.isEmpty(step))
             holder.createErrorAnnotation(element.getTextRange(), "Step should not be blank");
         else if (!helper.isImplemented(step, helper.getModule(step)))
-            holder.createErrorAnnotation(element.getTextRange(), "Undefined Step").registerFix(new CreateStepImplFix(step));
+            holder.createErrorAnnotation(element.getTextRange(), "Undefined step").registerFix(new CreateStepImplFix(step));
     }
 }

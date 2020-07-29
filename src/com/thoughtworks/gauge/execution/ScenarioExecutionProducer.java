@@ -23,11 +23,12 @@ import com.thoughtworks.gauge.Constants;
 import com.thoughtworks.gauge.language.SpecFile;
 import com.thoughtworks.gauge.language.psi.impl.SpecScenarioImpl;
 import com.thoughtworks.gauge.util.GaugeUtil;
+import org.jetbrains.annotations.NotNull;
 
 import static com.thoughtworks.gauge.util.GaugeUtil.isSpecFile;
 
 public class ScenarioExecutionProducer extends RunConfigurationProducer {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.ScenarioExecutionProducer");
+    private static final Logger LOG = Logger.getInstance(ScenarioExecutionProducer.class);
     private final int NO_SCENARIOS = -1;
     private final int NON_SCENARIO_CONTEXT = -2;
 
@@ -40,7 +41,8 @@ public class ScenarioExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context, Ref sourceElement) {
+    protected boolean setupConfigurationFromContext(@NotNull RunConfiguration configuration, ConfigurationContext context,
+                                                    @NotNull Ref sourceElement) {
         VirtualFile[] selectedFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(context.getDataContext());
         if (selectedFiles == null || selectedFiles.length > 1) {
             return false;
@@ -72,9 +74,10 @@ public class ScenarioExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    public boolean isConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(RunConfiguration configuration, @NotNull ConfigurationContext context) {
         if (!(configuration.getType() instanceof GaugeRunTaskConfigurationType)) return false;
-        Location location = context.getLocation();
+
+        Location<?> location = context.getLocation();
         if (location == null || location.getVirtualFile() == null || context.getPsiLocation() == null) return false;
         String specsToExecute = ((GaugeRunConfiguration) configuration).getSpecsToExecute();
         int identifier = getScenarioIdentifier(context, context.getPsiLocation().getContainingFile());

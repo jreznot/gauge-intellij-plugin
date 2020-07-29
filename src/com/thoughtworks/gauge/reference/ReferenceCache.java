@@ -1,6 +1,5 @@
 package com.thoughtworks.gauge.reference;
 
-
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.thoughtworks.gauge.language.psi.SpecStep;
@@ -8,7 +7,8 @@ import com.thoughtworks.gauge.language.psi.SpecStep;
 import java.util.Hashtable;
 
 public class ReferenceCache {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.reference.ReferenceCache");
+    private static final Logger LOG = Logger.getInstance(ReferenceCache.class);
+
     private final Hashtable<String, PsiStepReferenceCache> stepReferences;
 
     public ReferenceCache() {
@@ -48,9 +48,9 @@ public class ReferenceCache {
         return psiElement.isValid() && element.getText().equals(psiElement.getText());
     }
 
-    private class PsiStepReferenceCache {
-        private String text;
-        private PsiElement psiElement;
+    private static class PsiStepReferenceCache {
+        private final String text;
+        private final PsiElement psiElement;
 
         public PsiStepReferenceCache(String text, PsiElement psiElement) {
             this.text = text;

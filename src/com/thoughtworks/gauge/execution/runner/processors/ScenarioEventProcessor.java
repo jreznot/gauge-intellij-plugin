@@ -22,13 +22,13 @@ public class ScenarioEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) throws ParseException {
+    public Boolean onStart(ExecutionEvent event) throws ParseException {
         Integer parentId = getCache().getId(event.parentId);
         return super.addTest(getIdentifier(event, event.name), parentId, getIdentifier(event, event.id), event);
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) throws ParseException {
+    public Boolean onEnd(ExecutionEvent event) throws ParseException {
         Integer parentId = getCache().getId(event.parentId);
         Integer id = getCache().getId(getIdentifier(event, event.id));
         String name = getIdentifier(event, event.name);
@@ -42,7 +42,7 @@ public class ScenarioEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    public Boolean canProcess(ExecutionEvent event) throws ParseException {
+    public Boolean canProcess(ExecutionEvent event) {
         return event.type.equalsIgnoreCase(ExecutionEvent.SCENARIO_START) ||
                 event.type.equalsIgnoreCase(ExecutionEvent.SCENARIO_END);
     }
@@ -63,6 +63,6 @@ public class ScenarioEventProcessor extends GaugeEventProcessor {
 
     private String getIdentifier(ExecutionEvent event, String value) {
         TableInfo table = event.result.table;
-        return table != null ? value + TABLE_ROW_SEPARATOR + String.valueOf(table.rowIndex + 1) : value;
+        return table != null ? value + TABLE_ROW_SEPARATOR + (table.rowIndex + 1) : value;
     }
 }

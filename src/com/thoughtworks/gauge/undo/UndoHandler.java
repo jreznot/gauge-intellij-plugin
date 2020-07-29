@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,8 @@ import java.util.Map;
 import static com.intellij.openapi.vfs.LocalFileSystem.getInstance;
 
 public class UndoHandler {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.undo.UndoHandler");
+    private static final Logger LOG = Logger.getInstance(UndoHandler.class);
+
     private final List<String> fileNames;
     private final Project project;
     private final String name;
@@ -67,12 +69,13 @@ public class UndoHandler {
                 if (virtualFile != null) {
                     Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
                     getInstance().refreshAndFindFileByIoFile(new File(fileName));
-                    if (document != null)
-                        document.setText(StringUtils.join(FileUtils.readLines(new File(fileName), EncodingManager.getInstance().getEncoding(virtualFile, true).toString()).toArray(), "\n"));
+                    if (document != null) {
+                        Charset encoding = EncodingManager.getInstance().getEncoding(virtualFile, true);
+                        document.setText(StringUtils.join(FileUtils.readLines(new File(fileName), encoding.toString()).toArray(), "\n"));
+                    }
                 }
-            } catch (Exception ignored) {
-                LOG.debug(ignored);
+            } catch (Exception ex) {
+                LOG.debug(ex);
             }
     }
-
 }

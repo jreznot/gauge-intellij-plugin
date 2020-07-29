@@ -11,10 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public class GaugeSettings implements SearchableConfigurable, Disposable {
-
     private GaugeConfig gaugeConfig;
     private GaugeSettingsModel model;
-
 
     @NotNull
     @Override

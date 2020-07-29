@@ -1,6 +1,5 @@
 package com.thoughtworks.gauge.execution.runner.processors;
 
-
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.Notifications;
@@ -15,12 +14,12 @@ public class NotificationEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) {
+    protected Boolean onStart(ExecutionEvent event) {
         return true;
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) {
+    protected Boolean onEnd(ExecutionEvent event) {
         String title = event.notification.title;
         String message = event.notification.message;
         Notification notification = new Notification("Gauge", title, message, event.notification.getType(), NotificationListener.URL_OPENING_LISTENER);

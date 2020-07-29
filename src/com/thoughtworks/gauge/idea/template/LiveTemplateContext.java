@@ -1,7 +1,7 @@
 package com.thoughtworks.gauge.idea.template;
 
+import com.intellij.codeInsight.template.TemplateActionContext;
 import com.intellij.codeInsight.template.TemplateContextType;
-import com.intellij.psi.PsiFile;
 import com.thoughtworks.gauge.language.ConceptFileType;
 import com.thoughtworks.gauge.language.SpecFileType;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,8 @@ public class LiveTemplateContext extends TemplateContextType {
     }
 
     @Override
-    public boolean isInContext(@NotNull PsiFile psiFile, int i) {
-        return psiFile.getFileType() instanceof SpecFileType || psiFile.getFileType() instanceof ConceptFileType;
+    public boolean isInContext(@NotNull TemplateActionContext ctx) {
+        return ctx.getFile().getFileType() instanceof SpecFileType
+                || ctx.getFile().getFileType() instanceof ConceptFileType;
     }
 }

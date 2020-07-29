@@ -13,12 +13,12 @@ public class UnexpectedEndProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    Boolean onStart(ExecutionEvent event) throws ParseException {
+    protected Boolean onStart(ExecutionEvent event) throws ParseException {
         return true;
     }
 
     @Override
-    Boolean onEnd(ExecutionEvent event) throws ParseException {
+    protected Boolean onEnd(ExecutionEvent event) throws ParseException {
         String name = "Failed";
         ServiceMessageBuilder msg = ServiceMessageBuilder.testFailed(name);
         if (event.result.skipped()) {

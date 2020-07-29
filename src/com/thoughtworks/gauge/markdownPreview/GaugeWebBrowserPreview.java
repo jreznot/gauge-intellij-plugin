@@ -26,7 +26,6 @@ import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 public class GaugeWebBrowserPreview extends WebBrowserUrlProvider {
     private static File tempDirectory;
 
-
     private static File createOrGetTempDirectory(String projectName) throws IOException {
         if (tempDirectory == null)
             tempDirectory = FileUtil.createTempDirectory(projectName, null, true);

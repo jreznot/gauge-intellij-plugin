@@ -16,10 +16,11 @@ public class RefactoringDialog extends DialogWrapper {
     private JPanel contentPane;
     private JLabel heading;
     private JLabel infoPane;
-    private Project project;
-    private PsiFile file;
-    private Editor editor;
-    private String text;
+
+    private final Project project;
+    private final PsiFile file;
+    private final Editor editor;
+    private final String text;
 
     @Nullable
     @Override

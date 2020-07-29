@@ -17,9 +17,9 @@ import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.GaugeModuleComponent;
 import com.thoughtworks.gauge.PluginNotInstalledException;
+import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.core.GaugeService;
 
@@ -34,14 +34,16 @@ public class GaugeLibHelper extends AbstractLibHelper {
     public static final String PROJECT_LIB = "project-lib";
     public static final String GAUGE_LIB = "gauge-lib";
     public static final String JAVA = "java";
-    private static final String SRC_DIR = new File(new File("src", "test"), JAVA).getPath();
     public static final String LIBS = "libs";
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.module.lib.GaugeLibHelper");
+
+    private static final String SRC_DIR = new File(new File("src", "test"), JAVA).getPath();
+    private static final Logger LOG = Logger.getInstance(GaugeLibHelper.class);
 
     public GaugeLibHelper(Module module) {
         super(module);
     }
 
+    @Override
     public void checkDeps() {
         final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(getModule()).getModifiableModel();
         if (!gaugeJavaLibIsAdded(modifiableModel)) {
@@ -52,7 +54,6 @@ public class GaugeLibHelper extends AbstractLibHelper {
         addProjectLibIfNeeded(modifiableModel);
         checkProjectSourceAndOutputDirectory(modifiableModel);
         ApplicationManager.getApplication().runWriteAction(modifiableModel::commit);
-
     }
 
     private void checkProjectSourceAndOutputDirectory(ModifiableRootModel modifiableModel) {
@@ -169,8 +170,8 @@ public class GaugeLibHelper extends AbstractLibHelper {
         return new ProjectLib(GAUGE_LIB, new File(libRoot));
     }
 
-    private class ProjectLib {
-        private String libName;
+    private static class ProjectLib {
+        private final String libName;
         public File dir;
 
         public ProjectLib(String libName, File dir) {

@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class StepsBuilder {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.extract.stepBuilder.StepsBuilder");
+    private static final Logger LOG = Logger.getInstance(StepsBuilder.class);
+
     protected final Editor editor;
     protected final PsiFile psiFile;
     protected Map<String, String> tableMap = new HashMap<>();
     protected Map<String, String> TextToTableMap = new HashMap<>();
-
 
     public StepsBuilder(Editor editor, PsiFile psiFile) {
         this.editor = editor;
@@ -43,14 +43,14 @@ public abstract class StepsBuilder {
         return new SpecStepsBuilder(editor, psiFile);
     }
 
-    protected PsiElement getStep(PsiElement element, Class stepClass) {
+    protected PsiElement getStep(PsiElement element, Class<?> stepClass) {
         if (element.getParent() == null) return null;
         if (element.getParent().getClass().equals(stepClass))
             return element.getParent();
         return getStep(element.getParent(), stepClass);
     }
 
-    protected List<PsiElement> getPsiElements(Class stepClass) {
+    protected List<PsiElement> getPsiElements(Class<?> stepClass) {
         SelectionModel selectionModel = editor.getSelectionModel();
         List<PsiElement> specSteps = new ArrayList<>();
         int currentOffset = selectionModel.getSelectionStart();
@@ -61,8 +61,8 @@ public abstract class StepsBuilder {
                 if (step == null) return new ArrayList<>();
                 specSteps.add(step);
                 currentOffset += step.getText().length();
-            } catch (Exception ignored) {
-                LOG.debug(ignored);
+            } catch (Exception ex) {
+                LOG.debug(ex);
             }
         }
         return specSteps;

@@ -11,12 +11,17 @@ import com.intellij.openapi.module.ModuleManager;
 import com.thoughtworks.gauge.reference.ReferenceCache;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Gauge {
-    private static Hashtable<Module, GaugeService> gaugeProjectHandle = new Hashtable<>();
-    private static HashMap<String, HashSet<Module>> linkedModulesMap = new HashMap<>();
-    private static Hashtable<Module, ReferenceCache> moduleReferenceCaches = new Hashtable<>();
+    private static final Map<Module, GaugeService> gaugeProjectHandle = new ConcurrentHashMap<>();
+    private static final HashMap<String, HashSet<Module>> linkedModulesMap = new HashMap<>();
+    private static final Map<Module, ReferenceCache> moduleReferenceCaches = new ConcurrentHashMap<>();
 
     public static void addModule(Module module, GaugeService gaugeService) {
         HashSet<Module> modules = getSubModules(module);

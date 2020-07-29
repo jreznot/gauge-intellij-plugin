@@ -27,10 +27,10 @@ import java.util.List;
 public class GaugeOutputToGeneralTestEventsProcessor extends OutputToGeneralTestEventsConverter implements MessageProcessor {
     private static final Integer SUCCESS = 0;
     private final ProcessHandler handler;
-    private Key outputType;
+    private Key<?> outputType;
     private ServiceMessageVisitor visitor;
-    private List<EventProcessor> processors;
-    private EventProcessor unexpectedEndProcessor;
+    private final List<EventProcessor> processors;
+    private final EventProcessor unexpectedEndProcessor;
 
     GaugeOutputToGeneralTestEventsProcessor(@NotNull String testFrameworkName, @NotNull TestConsoleProperties consoleProperties, ProcessHandler handler) {
         super(testFrameworkName, consoleProperties);

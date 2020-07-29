@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class AnnotationHelper {
-    private static ModuleHelper helper = new ModuleHelper();
+    private static final ModuleHelper helper = new ModuleHelper();
 
     boolean isImplemented(SpecStep step, Module module) {
         return StepUtil.isImplementedStep(step, module);

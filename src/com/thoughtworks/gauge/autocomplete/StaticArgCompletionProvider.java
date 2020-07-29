@@ -29,7 +29,8 @@ import static com.thoughtworks.gauge.autocomplete.StepCompletionContributor.getP
 
 public class StaticArgCompletionProvider extends CompletionProvider<CompletionParameters> {
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet resultSet) {
+    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
+                                  @NotNull CompletionResultSet resultSet) {
         String prefix = getPrefix(parameters);
         resultSet = resultSet.withPrefixMatcher(new PlainPrefixMatcher(prefix));
         PsiFile specFile = parameters.getOriginalFile();

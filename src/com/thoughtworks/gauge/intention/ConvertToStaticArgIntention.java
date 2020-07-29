@@ -1,6 +1,5 @@
 package com.thoughtworks.gauge.intention;
 
-import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;

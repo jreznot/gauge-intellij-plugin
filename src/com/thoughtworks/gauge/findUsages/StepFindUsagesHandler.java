@@ -25,7 +25,9 @@ public class StepFindUsagesHandler extends FindUsagesHandler {
     }
 
     @Override
-    public boolean processElementUsages(final PsiElement psiElement, final Processor<? super UsageInfo> processor, final FindUsagesOptions findUsagesOptions) {
+    public boolean processElementUsages(@NotNull PsiElement psiElement,
+                                        @NotNull Processor<? super UsageInfo> processor,
+                                        @NotNull FindUsagesOptions findUsagesOptions) {
         ApplicationManager.getApplication().invokeLater(() -> runFindUsageReadAction(psiElement, processor, findUsagesOptions));
         return true;
     }
@@ -42,8 +44,8 @@ public class StepFindUsagesHandler extends FindUsagesHandler {
         });
     }
 
-    public boolean processUsages(final PsiElement psiElement, final Processor<? super UsageInfo> processor, final FindUsagesOptions findUsagesOptions) {
-        return super.processElementUsages(psiElement, processor, findUsagesOptions);
+    public void processUsages(final PsiElement psiElement, final Processor<? super UsageInfo> processor, final FindUsagesOptions findUsagesOptions) {
+        super.processElementUsages(psiElement, processor, findUsagesOptions);
     }
 
     private static class CustomFUH extends JavaFindUsagesHandler {
@@ -51,7 +53,7 @@ public class StepFindUsagesHandler extends FindUsagesHandler {
             super(psiElement, javaFindUsagesHandlerFactory);
         }
 
-        public static String getActionString() {
+        public static @NotNull String getActionString() {
             return ACTION_STRING;
         }
     }

@@ -19,13 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 public class ExtractConceptInfoCollector {
     public static final String CREATE_NEW_FILE = "Create New File(Enter info in the below field)";
     private final Editor editor;
     private final Map<String, String> tableMap;
     private final List<PsiElement> steps;
-    private Project project;
+    private final Project project;
 
     public ExtractConceptInfoCollector(Editor editor, Map<String, String> tableMap, List<PsiElement> steps, Project project) {
         this.editor = editor;

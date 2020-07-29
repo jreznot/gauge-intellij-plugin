@@ -22,7 +22,8 @@ import java.util.List;
 import static com.thoughtworks.gauge.autocomplete.StepCompletionContributor.getPrefix;
 
 public class DynamicArgCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet resultSet) {
+    @Override
+    public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet resultSet) {
         String prefix = getPrefix(parameters);
         resultSet = resultSet.withPrefixMatcher(new PlainPrefixMatcher(prefix));
         SpecDetail specDetail = PsiTreeUtil.getChildOfType(parameters.getOriginalFile(), SpecDetail.class);
@@ -37,5 +38,4 @@ public class DynamicArgCompletionProvider extends CompletionProvider<CompletionP
             }
         }
     }
-
 }

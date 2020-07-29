@@ -11,9 +11,11 @@ import com.intellij.psi.tree.TokenSet;
 import com.thoughtworks.gauge.language.token.SpecTokenTypes;
 import com.thoughtworks.gauge.lexer.SpecLexer;
 
-
 public class SpecStepWordScanner extends DefaultWordsScanner {
     public SpecStepWordScanner() {
-        super(new SpecLexer(), TokenSet.create(SpecTokenTypes.STEP), TokenSet.create(SpecTokenTypes.COMMENT), TokenSet.create(SpecTokenTypes.STEP));
+        super(new SpecLexer(),
+                TokenSet.create(SpecTokenTypes.STEP),
+                TokenSet.create(SpecTokenTypes.COMMENT),
+                TokenSet.create(SpecTokenTypes.STEP));
     }
 }

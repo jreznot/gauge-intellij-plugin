@@ -39,7 +39,7 @@ import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 public class GaugeModuleBuilder extends JavaModuleBuilder {
 
     @Override
-    public void setupRootModel(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+    public void setupRootModel(@NotNull ModifiableRootModel modifiableRootModel) throws ConfigurationException {
         checkGaugeIsInstalled();
         super.setupRootModel(modifiableRootModel);
         gaugeInit(modifiableRootModel);
@@ -65,8 +65,8 @@ public class GaugeModuleBuilder extends JavaModuleBuilder {
 
     private void gaugeInit(final ModifiableRootModel modifiableRootModel) throws ConfigurationException {
         File directory = new File(getModuleFileDirectory());
-        if(GaugeUtil.isGaugeProjectDir(directory)){
-            throw  new ConfigurationException("Given location is already a Gauge Project. Please try to initialize a Gauge project in a different location.");
+        if (GaugeUtil.isGaugeProjectDir(directory)) {
+            throw new ConfigurationException("Given location is already a Gauge Project. Please try to initialize a Gauge project in a different location.");
         }
         ProgressManager.getInstance().run(new Task.Modal(modifiableRootModel.getProject(), "Initializing gauge-" + getLanguage() + " project", true) {
             public void run(@NotNull ProgressIndicator progressIndicator) {
@@ -102,7 +102,7 @@ public class GaugeModuleBuilder extends JavaModuleBuilder {
     }
 
     @Override
-    public ModuleType getModuleType() {
+    public ModuleType<?> getModuleType() {
         return GaugeModuleType.getInstance();
     }
 

@@ -37,7 +37,6 @@ public class GaugeDataContext implements DataContext {
         } else {
             return dataContext.getData(dataId);
         }
-
     }
 
     private static class MyIdeView implements IdeView {

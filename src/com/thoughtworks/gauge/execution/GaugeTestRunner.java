@@ -17,7 +17,7 @@ import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import org.jetbrains.annotations.NotNull;
 
-public class GaugeTestRunner extends DefaultProgramRunner {
+public class GaugeTestRunner extends DefaultProgramRunner { // todo
     @NotNull
     public String getRunnerId() {
         return "GaugeApplicationRunner";

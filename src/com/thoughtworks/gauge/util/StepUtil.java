@@ -9,14 +9,23 @@ package com.thoughtworks.gauge.util;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiAnnotationMemberValue;
+import com.intellij.psi.PsiArrayInitializerMemberValue;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.AnnotatedElementsSearch;
 import com.thoughtworks.gauge.Constants;
-import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.Step;
 import com.thoughtworks.gauge.StepValue;
+import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.language.psi.SpecPsiImplUtil;
 import com.thoughtworks.gauge.language.psi.SpecStep;
@@ -25,14 +34,15 @@ import com.thoughtworks.gauge.language.psi.impl.ConceptStepImpl;
 import com.thoughtworks.gauge.language.psi.impl.SpecStepImpl;
 import com.thoughtworks.gauge.reference.ReferenceCache;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 public class StepUtil {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.util.StepUtil");
-    private static HashMap<String, StepValue> stepValueCache = new HashMap<>();
+    private static final Logger LOG = Logger.getInstance(StepUtil.class);
+    private static final HashMap<String, StepValue> stepValueCache = new HashMap<>();
 
     public static PsiElement findStepImpl(SpecStep step, Module module) {
         if (module == null) {
@@ -186,11 +196,11 @@ public class StepUtil {
         return findStepImpl(step, module) != null;
     }
 
-    public static boolean isStep(PsiElement element) {
+    public static boolean isStep(@Nullable PsiElement element) {
         return element instanceof SpecStepImpl;
     }
 
-    public static boolean isConcept(PsiElement element) {
+    public static boolean isConcept(@Nullable PsiElement element) {
         return element instanceof ConceptStepImpl;
     }
 

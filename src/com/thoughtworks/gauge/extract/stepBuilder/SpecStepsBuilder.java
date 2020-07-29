@@ -15,12 +15,12 @@ public class SpecStepsBuilder extends StepsBuilder {
 
     public List<PsiElement> build() {
         List<PsiElement> specSteps = getPsiElements(SpecStepImpl.class);
-        Integer count = 0;
+        int count = 0;
         for (PsiElement element : specSteps) {
             SpecStepImpl specStep = (SpecStepImpl) element;
             if (specStep.getInlineTable() != null && TextToTableMap.get(specStep.getInlineTable().getText().trim()) == null) {
-                tableMap.put("table" + (++count).toString(), specStep.getInlineTable().getText().trim());
-                TextToTableMap.put(specStep.getInlineTable().getText().trim(), "table" + (count).toString());
+                tableMap.put("table" + (++count), specStep.getInlineTable().getText().trim());
+                TextToTableMap.put(specStep.getInlineTable().getText().trim(), "table" + count);
             }
         }
         return specSteps;

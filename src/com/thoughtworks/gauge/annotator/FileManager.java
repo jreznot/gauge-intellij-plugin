@@ -35,7 +35,7 @@ public class FileManager {
                 javaFiles.add(file);
             }
         }
-        Collections.sort(javaFiles, (o1, o2) -> FileManager.getJavaFileName(o1).compareToIgnoreCase(FileManager.getJavaFileName(o2)));
+        javaFiles.sort((o1, o2) -> FileManager.getJavaFileName(o1).compareToIgnoreCase(FileManager.getJavaFileName(o2)));
         return javaFiles;
     }
 
@@ -49,7 +49,7 @@ public class FileManager {
                 files.add(file);
             }
         }
-        Collections.sort(files, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+        files.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
         return files;
     }
 

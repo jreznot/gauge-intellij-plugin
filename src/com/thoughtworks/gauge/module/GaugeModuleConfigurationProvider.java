@@ -19,9 +19,9 @@ import java.util.List;
 public class GaugeModuleConfigurationProvider implements ModuleConfigurationEditorProvider {
     @Override
     public ModuleConfigurationEditor[] createEditors(ModuleConfigurationState state) {
-        final Module module = state.getRootModel().getModule();
+        Module module = state.getRootModel().getModule();
 
-        final ModuleType moduleType = ModuleType.get(module);
+        ModuleType<?> moduleType = ModuleType.get(module);
 
         if (!(moduleType instanceof GaugeModuleType)) {
             return ModuleConfigurationEditor.EMPTY;

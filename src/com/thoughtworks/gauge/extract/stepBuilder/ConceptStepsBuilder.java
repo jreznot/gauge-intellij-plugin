@@ -15,12 +15,12 @@ public class ConceptStepsBuilder extends StepsBuilder {
     @Override
     public List<PsiElement> build() {
         List<PsiElement> specSteps = getPsiElements(ConceptStepImpl.class);
-        Integer count = 0;
+        int count = 0;
         for (PsiElement element : specSteps) {
             ConceptStepImpl specStep = (ConceptStepImpl) element;
             if (specStep.getTable() != null && TextToTableMap.get(specStep.getTable().getText().trim()) == null) {
-                tableMap.put("table" + (++count).toString(), specStep.getTable().getText().trim());
-                TextToTableMap.put(specStep.getTable().getText().trim(), "table" + (count).toString());
+                tableMap.put("table" + (++count), specStep.getTable().getText().trim());
+                TextToTableMap.put(specStep.getTable().getText().trim(), "table" + count);
             }
         }
         return specSteps;

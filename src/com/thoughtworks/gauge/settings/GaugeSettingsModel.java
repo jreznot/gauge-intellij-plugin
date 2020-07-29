@@ -2,6 +2,8 @@ package com.thoughtworks.gauge.settings;
 
 import com.thoughtworks.gauge.Constants;
 
+import java.util.Objects;
+
 public class GaugeSettingsModel {
     public String gaugePath;
     public String homePath;
@@ -38,8 +40,8 @@ public class GaugeSettingsModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GaugeSettingsModel that = (GaugeSettingsModel) o;
-        return (gaugePath != null ? gaugePath.equals(that.gaugePath) : that.gaugePath == null)
-                && (homePath != null ? homePath.equals(that.homePath) : that.homePath == null) &&
+        return (Objects.equals(gaugePath, that.gaugePath))
+                && (Objects.equals(homePath, that.homePath)) &&
                 useIntelliJTestRunner() == that.useIntelliJTestRunner();
     }
 

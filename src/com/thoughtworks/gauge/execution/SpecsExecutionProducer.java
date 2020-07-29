@@ -27,7 +27,6 @@ import java.util.List;
 
 import static com.thoughtworks.gauge.util.GaugeUtil.isSpecFile;
 
-
 public class SpecsExecutionProducer extends RunConfigurationProducer {
 
     public static final String DEFAULT_CONFIGURATION_NAME = "Specifications";
@@ -41,7 +40,9 @@ public class SpecsExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(RunConfiguration configuration, ConfigurationContext configurationContext, Ref ref) {
+    protected boolean setupConfigurationFromContext(@NotNull RunConfiguration configuration,
+                                                    ConfigurationContext configurationContext,
+                                                    @NotNull Ref ref) {
         VirtualFile[] selectedFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(configurationContext.getDataContext());
         Module module = configurationContext.getModule();
         if (selectedFiles == null || module == null)
@@ -67,7 +68,7 @@ public class SpecsExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    public boolean isConfigurationFromContext(RunConfiguration config, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(RunConfiguration config, @NotNull ConfigurationContext context) {
         if (!(config.getType() instanceof GaugeRunTaskConfigurationType)) return false;
         if (!(context.getPsiLocation() instanceof PsiDirectory) && !(context.getPsiLocation() instanceof PsiFile))
             return false;

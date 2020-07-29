@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class GaugePrefixMatcher extends PrefixMatcher {
 
-    private Pattern regexPattern;
+    private final Pattern regexPattern;
 
     protected GaugePrefixMatcher(String prefix) {
         super(prefix);

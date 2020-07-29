@@ -15,14 +15,15 @@ import java.util.Collection;
 import static com.thoughtworks.gauge.autocomplete.StepCompletionContributor.getPrefix;
 
 public class ConceptDynamicArgCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet resultSet) {
+    @Override
+    public void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
+                               @NotNull CompletionResultSet resultSet) {
         String prefix = getPrefix(parameters);
         resultSet = resultSet.withPrefixMatcher(new PlainPrefixMatcher(prefix));
         Collection<ConceptDynamicArg> args = PsiTreeUtil.collectElementsOfType(parameters.getOriginalFile(), ConceptDynamicArg.class);
         for (ConceptDynamicArg arg : args) {
-            LookupElementBuilder item = LookupElementBuilder.create(arg.getText().replaceAll("<|>", ""));
+            LookupElementBuilder item = LookupElementBuilder.create(arg.getText().replaceAll("[<>]", ""));
             resultSet.addElement(item);
         }
     }
-
 }

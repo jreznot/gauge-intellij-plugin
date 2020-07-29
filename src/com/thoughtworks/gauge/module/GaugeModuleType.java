@@ -40,16 +40,16 @@ public class GaugeModuleType extends ModuleType<GaugeModuleBuilder> {
     @NotNull
     @Override
     public String getDescription() {
-        return "module supported for writing gauge tests";
+        return "Module supported for writing gauge tests.";
     }
 
     @Override
-    public Icon getIcon() {
+    public @NotNull Icon getIcon() {
         return GaugeIcon.GAUGE_LOGO;
     }
 
     @Override
-    public Icon getNodeIcon(@Deprecated boolean isOpened) {
+    public @NotNull Icon getNodeIcon(@Deprecated boolean isOpened) {
         return GaugeIcon.GAUGE_LOGO;
     }
 }

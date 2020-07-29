@@ -10,10 +10,11 @@ import com.thoughtworks.gauge.helper.ModuleHelper;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import com.thoughtworks.gauge.util.HookUtil;
 import com.thoughtworks.gauge.util.StepUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class ImplUsageProvider implements ImplicitUsageProvider {
-    private ReferenceSearchHelper searchHelper;
-    private ModuleHelper moduleHelper;
+    private final ReferenceSearchHelper searchHelper;
+    private final ModuleHelper moduleHelper;
 
     public ImplUsageProvider(ReferenceSearchHelper searchHelper, ModuleHelper moduleHelper) {
         this.searchHelper = searchHelper;
@@ -25,8 +26,9 @@ public class ImplUsageProvider implements ImplicitUsageProvider {
         this.moduleHelper = new ModuleHelper();
     }
 
-    public boolean isImplicitUsage(PsiElement element) {
-        if (element == null || !moduleHelper.isGaugeModule(element)) return false;
+    @Override
+    public boolean isImplicitUsage(@NotNull PsiElement element) {
+        if (!moduleHelper.isGaugeModule(element)) return false;
         if (element instanceof PsiClassImpl) return isClassUsed((PsiClassImpl) element);
         if (element instanceof PsiParameterImpl) return isParameterUsed((PsiParameterImpl) element);
         return isElementUsed(element);
@@ -51,11 +53,13 @@ public class ImplUsageProvider implements ImplicitUsageProvider {
         return searchHelper.getPsiElements(collector, element).size() > 0;
     }
 
-    public boolean isImplicitRead(final PsiElement element) {
+    @Override
+    public boolean isImplicitRead(@NotNull PsiElement element) {
         return false;
     }
 
-    public boolean isImplicitWrite(final PsiElement element) {
+    @Override
+    public boolean isImplicitWrite(@NotNull PsiElement element) {
         return false;
     }
 }

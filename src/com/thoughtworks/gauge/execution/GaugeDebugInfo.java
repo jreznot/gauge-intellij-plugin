@@ -5,7 +5,6 @@ import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.thoughtworks.gauge.util.SocketUtils;
 
-
 public class GaugeDebugInfo {
     private final boolean shouldDebug;
     private final String port;
@@ -48,5 +47,4 @@ public class GaugeDebugInfo {
     private static String debugPort() {
         return String.valueOf(SocketUtils.findFreePortForApi());
     }
-
 }

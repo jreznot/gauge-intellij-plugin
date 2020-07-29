@@ -14,12 +14,8 @@ public class GaugeNotification {
                 return NotificationType.ERROR;
             case "warning":
                 return NotificationType.WARNING;
-            case "info":
-                return NotificationType.INFORMATION;
             default:
                 return NotificationType.INFORMATION;
-
         }
-
     }
 }

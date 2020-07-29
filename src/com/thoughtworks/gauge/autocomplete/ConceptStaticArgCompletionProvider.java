@@ -8,15 +8,16 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.thoughtworks.gauge.language.psi.ConceptStaticArg;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
 import static com.thoughtworks.gauge.autocomplete.StepCompletionContributor.getPrefix;
 
-
 public class ConceptStaticArgCompletionProvider extends CompletionProvider<CompletionParameters> {
     @Override
-    protected void addCompletions(CompletionParameters parameters, ProcessingContext processingContext, CompletionResultSet resultSet) {
+    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext processingContext,
+                                  @NotNull CompletionResultSet resultSet) {
         String prefix = getPrefix(parameters);
         resultSet = resultSet.withPrefixMatcher(new PlainPrefixMatcher(prefix));
         Collection<ConceptStaticArg> staticArgs = PsiTreeUtil.collectElementsOfType(parameters.getOriginalFile(), ConceptStaticArg.class);

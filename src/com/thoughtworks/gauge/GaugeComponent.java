@@ -17,8 +17,9 @@ import static com.thoughtworks.gauge.Constants.MIN_GAUGE_VERSION;
 import static com.thoughtworks.gauge.util.GaugeUtil.isGaugeProjectDir;
 
 public class GaugeComponent implements ProjectComponent {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.GaugeComponent");
-    private Project project;
+    private static final Logger LOG = Logger.getInstance(GaugeComponent.class);
+
+    private final Project project;
 
     public GaugeComponent(Project project) {
         this.project = project;

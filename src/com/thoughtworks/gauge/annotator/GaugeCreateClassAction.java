@@ -28,5 +28,4 @@ public class GaugeCreateClassAction extends CreateClassAction {
         }
         return createdElement.getContainingFile().getVirtualFile();
     }
-
 }

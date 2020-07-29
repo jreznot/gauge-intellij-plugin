@@ -14,8 +14,7 @@ import com.thoughtworks.gauge.util.GaugeUtil;
 import static com.thoughtworks.gauge.GaugeModuleComponent.isGaugeProject;
 
 public abstract class AbstractLibHelper implements LibHelper {
-
-    private Module module;
+    private final Module module;
 
     public AbstractLibHelper(Module module) {
         this.module = module;

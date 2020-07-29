@@ -20,13 +20,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.thoughtworks.gauge.language.SpecFile;
 import com.thoughtworks.gauge.language.psi.SpecScenario;
-import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import static com.thoughtworks.gauge.util.GaugeUtil.isSpecFile;
 
-public class GaugeExecutionProducer extends RunConfigurationProducer {
+public class GaugeExecutionProducer extends RunConfigurationProducer<RunConfiguration> {
 
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.execution.GaugeExecutionProducer");
+    private static final Logger LOG = Logger.getInstance(GaugeExecutionProducer.class);
+
     public GaugeExecutionProducer() {
         super(new GaugeRunTaskConfigurationType());
     }
@@ -36,7 +37,8 @@ public class GaugeExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context, Ref sourceElement) {
+    protected boolean setupConfigurationFromContext(@NotNull RunConfiguration configuration, ConfigurationContext context,
+                                                    @NotNull Ref sourceElement) {
         VirtualFile[] selectedFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(context.getDataContext());
         if (selectedFiles == null || selectedFiles.length > 1) return false;
         Module module = context.getModule();
@@ -59,9 +61,10 @@ public class GaugeExecutionProducer extends RunConfigurationProducer {
     }
 
     @Override
-    public boolean isConfigurationFromContext(RunConfiguration configuration, ConfigurationContext context) {
+    public boolean isConfigurationFromContext(RunConfiguration configuration, @NotNull ConfigurationContext context) {
         if (!(configuration.getType() instanceof GaugeRunTaskConfigurationType)) return false;
-        Location location = context.getLocation();
+
+        Location<?> location = context.getLocation();
         PsiElement element = CommonDataKeys.PSI_ELEMENT.getData(context.getDataContext());
         if (location == null || location.getVirtualFile() == null || element == null) return false;
         if (!isInSpecScope(context.getPsiLocation())) return false;
