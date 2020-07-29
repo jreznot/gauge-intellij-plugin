@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// todo refactor
 class GaugeErrors {
     private static Map<String, List<GaugeError>> e = new HashMap<>();
 

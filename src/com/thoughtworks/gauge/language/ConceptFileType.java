@@ -31,7 +31,7 @@ public class ConceptFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDescription() {
-        return "Gauge Concept";
+        return "Gauge concept";
     }
 
     @NotNull

@@ -12,14 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.thoughtworks.gauge.Constants.*;
 
+// todo
 public class SpecFileTypeFactory extends FileTypeFactory {
-
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {
         fileTypeConsumer.consume(SpecFileType.INSTANCE, SPEC_EXTENSION);
         fileTypeConsumer.consume(SpecFileType.INSTANCE, MD_EXTENSION);
         fileTypeConsumer.consume(ConceptFileType.INSTANCE, CONCEPT_EXTENSION);
     }
-
-
 }

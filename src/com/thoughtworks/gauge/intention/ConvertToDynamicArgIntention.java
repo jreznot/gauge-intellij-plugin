@@ -18,8 +18,7 @@ public class ConvertToDynamicArgIntention extends ConvertArgTypeIntentionBase {
     }
 
     @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiElement element) {
-        if (null == element) return false;
+    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
         if (!element.isWritable()) return false;
         return PsiTreeUtil.getParentOfType(element, SpecStaticArg.class) != null 
                 || PsiTreeUtil.getParentOfType(element, ConceptStaticArg.class) != null;

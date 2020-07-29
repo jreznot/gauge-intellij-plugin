@@ -14,7 +14,8 @@ import java.io.File;
 
 public class GlobalInspectionProvider extends GlobalInspectionTool {
     @Override
-    public void runInspection(@NotNull AnalysisScope scope, @NotNull InspectionManager manager, @NotNull GlobalInspectionContext globalContext, @NotNull ProblemDescriptionsProcessor processor) {
+    public void runInspection(@NotNull AnalysisScope scope, @NotNull InspectionManager manager,
+                              @NotNull GlobalInspectionContext globalContext, @NotNull ProblemDescriptionsProcessor processor) {
         GaugeErrors.init();
         Module[] modules = ModuleManager.getInstance(globalContext.getProject()).getModules();
         for (Module module : modules) {

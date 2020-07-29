@@ -19,8 +19,10 @@ import org.jetbrains.annotations.NotNull;
 import static com.intellij.openapi.vcs.VcsNotifier.STANDARD_NOTIFICATION;
 
 class Spectacle {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.markdownPreview.Spectacle");
+    private static final Logger LOG = Logger.getInstance(Spectacle.class);
+
     public static final String NAME = "spectacle";
+
     private final Project project;
     private final GaugeSettingsModel settings;
     private static boolean installing = false;

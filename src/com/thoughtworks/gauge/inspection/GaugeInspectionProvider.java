@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class GaugeInspectionProvider extends LocalInspectionTool {
+public abstract class GaugeInspectionProvider extends LocalInspectionTool {
     @Nullable
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {

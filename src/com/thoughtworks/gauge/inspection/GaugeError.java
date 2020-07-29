@@ -5,17 +5,16 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.thoughtworks.gauge.Constants;
 
 public class GaugeError {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.inspection.GaugeError");
-    private String type;
-    private String fileName;
-    private int lineNumber;
-    private String message;
+    private static final Logger LOG = Logger.getInstance(GaugeError.class);
+
+    private final String fileName;
+    private final int lineNumber;
+    private final String message;
 
     public GaugeError(String type, String fileName, int lineNumber, String message) {
-        this.type = type;
         this.fileName = fileName;
         this.lineNumber = lineNumber;
-        this.message = String.format("%s line number: %d, %s", this.type, lineNumber, message);
+        this.message = String.format("%s line number: %d, %s", type, lineNumber, message);
     }
 
     boolean isFrom(String fileName) {

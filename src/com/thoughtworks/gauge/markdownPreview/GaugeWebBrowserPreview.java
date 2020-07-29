@@ -16,6 +16,7 @@ import com.thoughtworks.gauge.language.ConceptFileType;
 import com.thoughtworks.gauge.language.SpecFileType;
 import com.thoughtworks.gauge.settings.GaugeSettingsModel;
 import com.thoughtworks.gauge.util.GaugeUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class GaugeWebBrowserPreview extends WebBrowserUrlProvider {
 
     @Nullable
     @Override
-    protected Url getUrl(OpenInBrowserRequest request, VirtualFile virtualFile) throws BrowserException {
+    protected Url getUrl(@NotNull OpenInBrowserRequest request, @NotNull VirtualFile virtualFile) {
         try {
             if (!request.isAppendAccessToken()) return null;
             GaugeSettingsModel settings = getGaugeSettings();

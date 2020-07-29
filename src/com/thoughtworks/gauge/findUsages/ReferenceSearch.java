@@ -41,7 +41,10 @@ public class ReferenceSearch extends QueryExecutorBase<PsiReference, ReferencesS
         ApplicationManager.getApplication().runReadAction(() -> {
             if (!helper.shouldFindReferences(searchParameters, searchParameters.getElementToSearch())) return;
             if (EventQueue.isDispatchThread())
-                ProgressManager.getInstance().runProcessWithProgressSynchronously(() -> processElements(searchParameters, processor), "Find Usages", true, searchParameters.getElementToSearch().getProject());
+                ProgressManager.getInstance().runProcessWithProgressSynchronously(
+                        () -> processElements(searchParameters, processor),
+                        "Find Usages", true, searchParameters.getElementToSearch().getProject()
+                );
             else
                 processElements(searchParameters, processor);
         });
@@ -51,7 +54,7 @@ public class ReferenceSearch extends QueryExecutorBase<PsiReference, ReferencesS
         ApplicationManager.getApplication().runReadAction(() -> {
             StepCollector collector = helper.getStepCollector(searchParameters.getElementToSearch());
             collector.collect();
-            final List<PsiElement> elements = helper.getPsiElements(collector, searchParameters.getElementToSearch());
+            List<PsiElement> elements = helper.getPsiElements(collector, searchParameters.getElementToSearch());
             for (PsiElement element : elements)
                 processor.process(element.getReference());
         });

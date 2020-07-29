@@ -11,7 +11,6 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
 
-
 public class ConceptFile extends PsiFileBase {
     public ConceptFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, Concept.INSTANCE);
@@ -27,5 +26,4 @@ public class ConceptFile extends PsiFileBase {
     public String toString() {
         return "Concept File";
     }
-
 }

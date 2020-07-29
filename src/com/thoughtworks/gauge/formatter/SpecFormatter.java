@@ -29,10 +29,11 @@ import java.io.File;
 import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 
 public class SpecFormatter extends AnAction {
-    private static final Logger LOG = Logger.getInstance("#com.thoughtworks.gauge.formatter.SpecFormatter");
+    private static final Logger LOG = Logger.getInstance(SpecFormatter.class);
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        final Project project = anActionEvent.getData(LangDataKeys.PROJECT);
+        Project project = anActionEvent.getData(LangDataKeys.PROJECT);
         if (project == null) {
             return;
         }

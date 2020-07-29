@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SpecInspectionProvider extends GaugeInspectionProvider {
+    @Override
     PsiElement getElement(PsiElement element) {
         if (element == null) return null;
         if (element instanceof SpecStep) return element;

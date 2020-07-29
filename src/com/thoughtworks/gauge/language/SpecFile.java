@@ -26,5 +26,4 @@ public class SpecFile extends PsiFileBase {
     public String toString() {
         return "Specification File";
     }
-
 }
