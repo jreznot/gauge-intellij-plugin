@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.annotator;
 
@@ -56,6 +66,7 @@ import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.language.psi.SpecStep;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -155,7 +166,7 @@ public class CreateStepImplFix extends BaseIntentionAction {
         }
     }
 
-    private void addImpl(final Project project, final VirtualFile file) {
+    private void addImpl(Project project, VirtualFile file) {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -165,7 +176,9 @@ public class CreateStepImplFix extends BaseIntentionAction {
                         return;
                     }
                     PsiMethod addedStepImpl = addStepImplMethod(psifile);
-                    final TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(addedStepImpl);
+                    if (addedStepImpl == null) return;
+
+                    TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(addedStepImpl);
                     templateMethodName(addedStepImpl, builder);
                     templateParams(addedStepImpl, builder);
                     templateBody(addedStepImpl, builder);
@@ -173,15 +186,19 @@ public class CreateStepImplFix extends BaseIntentionAction {
                 });
             }
 
+            @Nullable
             private PsiMethod addStepImplMethod(PsiFile psifile) {
-                final PsiClass psiClass = PsiTreeUtil.getChildOfType(psifile, PsiClass.class);
+                PsiClass psiClass = PsiTreeUtil.getChildOfType(psifile, PsiClass.class);
+                if (psiClass == null) return null;
+
                 PsiDocumentManager.getInstance(project).commitAllDocuments();
 
                 StepValue stepValue = step.getStepValue();
                 StringBuilder text = new StringBuilder(String.format("@" + Step.class.getName() + "(\"%s\")\n", stepValue.getStepAnnotationText()));
                 text.append(String.format("public void %s(%s){\n\n", getMethodName(psiClass), getParamList(stepValue.getParameters())));
                 text.append("}\n");
-                final PsiMethod stepMethod = JavaPsiFacade.getElementFactory(project).createMethodFromText(text.toString(), psiClass);
+
+                PsiMethod stepMethod = JavaPsiFacade.getElementFactory(project).createMethodFromText(text.toString(), psiClass);
                 PsiMethod addedElement = (PsiMethod) psiClass.add(stepMethod);
                 JavaCodeStyleManager.getInstance(project).shortenClassReferences(addedElement);
                 CodeStyleManager.getInstance(project).reformat(psiClass);
@@ -240,7 +257,7 @@ public class CreateStepImplFix extends BaseIntentionAction {
     private String getMethodName(PsiClass psiClass) {
         try {
             for (int i = 1, length = psiClass.getAllMethods().length; i < length; i++) {
-                String methodName = IMPLEMENTATION + Integer.toString(i);
+                String methodName = IMPLEMENTATION + i;
                 if (psiClass.findMethodsByName(methodName, true).length == 0)
                     return methodName;
             }

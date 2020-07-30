@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.thoughtworks.gauge.annotator;
 
 import com.intellij.ide.highlighter.JavaFileType;
@@ -9,20 +25,16 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.thoughtworks.gauge.Constants;
 import com.thoughtworks.gauge.language.ConceptFileType;
 import com.thoughtworks.gauge.language.SpecFileType;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.intellij.psi.search.GlobalSearchScope.moduleScope;
+import static com.intellij.psi.search.GlobalSearchScope.projectScope;
 
 public class FileManager {
     public static List<PsiFile> getAllJavaFiles(Module module) {
@@ -40,7 +52,7 @@ public class FileManager {
     }
 
     public static List<PsiFile> getAllConceptFiles(Project project) {
-        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(ConceptFileType.INSTANCE, GlobalSearchScope.projectScope(project));
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(ConceptFileType.INSTANCE, projectScope(project));
         List<PsiFile> files = new ArrayList<>();
 
         for (VirtualFile ConceptVFile : virtualFiles) {
@@ -62,12 +74,12 @@ public class FileManager {
     }
 
     public static List<VirtualFile> getAllSpecFiles(Project project) {
-        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(SpecFileType.INSTANCE, GlobalSearchScope.projectScope(project));
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(SpecFileType.INSTANCE, projectScope(project));
         return new ArrayList<>(virtualFiles);
     }
 
     public static List<VirtualFile> getConceptFiles(Project project) {
-        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(ConceptFileType.INSTANCE, GlobalSearchScope.projectScope(project));
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(ConceptFileType.INSTANCE, projectScope(project));
         return new ArrayList<>(virtualFiles);
     }
 }

@@ -1,8 +1,18 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.module.lib;
 
@@ -45,7 +55,7 @@ public class GaugeLibHelper extends AbstractLibHelper {
 
     @Override
     public void checkDeps() {
-        final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(getModule()).getModifiableModel();
+        ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(getModule()).getModifiableModel();
         if (!gaugeJavaLibIsAdded(modifiableModel)) {
             addGaugeJavaLib(modifiableModel);
         } else {
@@ -74,12 +84,14 @@ public class GaugeLibHelper extends AbstractLibHelper {
 
     private VirtualFile testOutputPath(Module module) {
         File outputDir = new File(String.format("%s%sout%stest%s%s", moduleDirPath(module), File.separator, File.separator, File.separator, module.getName()));
+        //noinspection ResultOfMethodCallIgnored
         outputDir.mkdirs();
         return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(outputDir);
     }
 
     private VirtualFile outputPath(Module module) {
         File outputDir = new File(String.format("%s%sout%sproduction%s%s", moduleDirPath(module), File.separator, File.separator, File.separator, module.getName()));
+        //noinspection ResultOfMethodCallIgnored
         outputDir.mkdirs();
         return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(outputDir);
     }
@@ -99,7 +111,9 @@ public class GaugeLibHelper extends AbstractLibHelper {
         LibraryTable libraryTable = model.getModuleLibraryTable();
         Library library = libraryTable.getLibraryByName(GAUGE_LIB);
         ProjectLib latestGaugeLib = gaugeLib(model.getModule());
-        updateLibrary(library, latestGaugeLib);
+        if (library != null && latestGaugeLib != null) {
+            updateLibrary(library, latestGaugeLib);
+        }
     }
 
     private void updateLibrary(Library library, ProjectLib newLib) {
@@ -142,7 +156,6 @@ public class GaugeLibHelper extends AbstractLibHelper {
             libModel.commit();
         }
     }
-
 
     private ProjectLib projectLib(Module module) {
         return new ProjectLib(PROJECT_LIB, new File(moduleDir(module), LIBS));

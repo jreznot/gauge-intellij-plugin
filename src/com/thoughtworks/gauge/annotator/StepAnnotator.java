@@ -1,12 +1,23 @@
-/*----------------------------------------------------------------
- *  Copyright (c) ThoughtWorks, Inc.
- *  Licensed under the Apache License, Version 2.0
- *  See LICENSE.txt in the project root for license information.
- *----------------------------------------------------------------*/
+/*
+ * Copyright (C) 2020 ThoughtWorks, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package com.thoughtworks.gauge.annotator;
 
 import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import com.thoughtworks.gauge.language.psi.ConceptStep;
 import com.thoughtworks.gauge.language.psi.SpecStep;
@@ -14,7 +25,6 @@ import com.thoughtworks.gauge.language.psi.impl.SpecStepImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class StepAnnotator implements com.intellij.lang.annotation.Annotator {
-
     private final AnnotationHelper helper;
 
     public StepAnnotator(AnnotationHelper helper) {
@@ -38,9 +48,15 @@ public class StepAnnotator implements com.intellij.lang.annotation.Annotator {
     }
 
     private void createWarning(PsiElement element, AnnotationHolder holder, SpecStep step) {
-        if (helper.isEmpty(step))
-            holder.createErrorAnnotation(element.getTextRange(), "Step should not be blank");
-        else if (!helper.isImplemented(step, helper.getModule(step)))
-            holder.createErrorAnnotation(element.getTextRange(), "Undefined step").registerFix(new CreateStepImplFix(step));
+        if (helper.isEmpty(step)) {
+            holder.newAnnotation(HighlightSeverity.ERROR, "Step should not be blank")
+                    .range(element.getTextRange())
+                    .create();
+        } else if (!helper.isImplemented(step, helper.getModule(step))) {
+            holder.newAnnotation(HighlightSeverity.ERROR, "Undefined step")
+                    .range(element.getTextRange())
+                    .withFix(new CreateStepImplFix(step))
+                    .create();
+        }
     }
 }
