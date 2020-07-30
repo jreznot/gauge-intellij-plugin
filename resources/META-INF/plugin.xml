@@ -3,6 +3,7 @@
     <name>Gauge</name>
     <vendor>JetBrains</vendor>
     <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.properties</depends>
 
     <description><![CDATA[
         Plugin for writing <a href="http://gauge.org">Gauge tests</a> (originally developed by Thoughtworks Inc.)
@@ -199,6 +200,9 @@
         <webBrowserUrlProvider implementation="com.thoughtworks.gauge.markdownPreview.GaugeWebBrowserPreview"/>
 
         <applicationService serviceImplementation="com.thoughtworks.gauge.settings.GaugeSettingsService"/>
+
+        <properties.implicitPropertyUsageProvider
+                implementation="com.thoughtworks.gauge.properties.GaugeImplicitPropertyUsageProvider"/>
     </extensions>
 
     <actions>
