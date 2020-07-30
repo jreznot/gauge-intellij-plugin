@@ -19,31 +19,31 @@ package com.thoughtworks.gauge;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManagerListener;
+import com.intellij.openapi.project.ProjectUtil;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.core.GaugeVersion;
-
-import java.io.File;
-import java.util.Arrays;
+import org.jetbrains.annotations.NotNull;
 
 import static com.thoughtworks.gauge.Constants.MIN_GAUGE_VERSION;
 import static com.thoughtworks.gauge.util.GaugeUtil.isGaugeProjectDir;
 
-public class GaugeComponent implements ProjectComponent {
-    private static final Logger LOG = Logger.getInstance(GaugeComponent.class);
+public class GaugeProjectListener implements ProjectManagerListener {
+    private static final Logger LOG = Logger.getInstance(GaugeProjectListener.class);
 
     private final Project project;
 
-    public GaugeComponent(Project project) {
+    public GaugeProjectListener(Project project) {
         this.project = project;
     }
 
     @Override
-    public void projectOpened() {
-        if (isGaugeProjectDir(new File(this.project.getBasePath()))) {
+    public void projectOpened(@NotNull Project project) {
+        if (isGaugeProjectDir(ProjectUtil.guessProjectDir(project))) {
             if (!GaugeVersion.isGreaterOrEqual(MIN_GAUGE_VERSION, false)) {
                 String notificationTitle = String.format("Unsupported Gauge Version(%s)", GaugeVersion.getVersion(false).version);
                 String errorMessage = String.format("This version of Gauge Intellij plugin only works with Gauge version >= %s", MIN_GAUGE_VERSION);
@@ -55,7 +55,9 @@ public class GaugeComponent implements ProjectComponent {
     }
 
     @Override
-    public void projectClosed() {
-        Arrays.stream(ModuleManager.getInstance(project).getModules()).forEach(Gauge::disposeComponent);
+    public void projectClosed(@NotNull Project project) {
+        for (Module module : ModuleManager.getInstance(project).getModules()) {
+            Gauge.disposeComponent(module);
+        }
     }
 }

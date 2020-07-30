@@ -31,7 +31,6 @@ import com.thoughtworks.gauge.language.psi.SpecStep;
 import com.thoughtworks.gauge.language.token.ConceptTokenTypes;
 import com.thoughtworks.gauge.language.token.SpecTokenTypes;
 
-import java.io.IOException;
 import java.util.List;
 
 public class StepCompletionContributor extends CompletionContributor {

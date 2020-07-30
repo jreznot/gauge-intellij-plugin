@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 public class SpecStepImplTest {
     @Test
-    public void testShouldGetReferenceInGaugeModule() throws Exception {
+    public void testShouldGetReferenceInGaugeModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
         ASTNode node = mock(ASTNode.class);
         SpecStepImpl specStep = new SpecStepImpl(node, helper);
@@ -41,7 +41,7 @@ public class SpecStepImplTest {
     }
 
     @Test
-    public void testShouldNotGetReferenceInNonGaugeModule() throws Exception {
+    public void testShouldNotGetReferenceInNonGaugeModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
         ASTNode node = mock(ASTNode.class);
         SpecStepImpl specStep = new SpecStepImpl(node, helper);

@@ -26,12 +26,15 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class UnexpectedEndProcessorTest {
 
     @Test
-    public void canProcess() throws Exception {
+    public void canProcess() {
         UnexpectedEndProcessor processor = new UnexpectedEndProcessor(null, new TestsCache());
         assertTrue(processor.canProcess(null));
 

@@ -17,7 +17,6 @@
 package com.thoughtworks.gauge.execution;
 
 import com.intellij.execution.ui.CommonProgramParametersPanel;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +44,7 @@ public class GaugeExecutionConfigurationSettingsEditor extends SettingsEditor<Ga
     }
 
     @Override
-    protected void applyEditorTo(GaugeRunConfiguration config) throws ConfigurationException {
+    protected void applyEditorTo(GaugeRunConfiguration config) {
         config.setSpecsToExecute(specification.getText());
         config.setEnvironment(environment.getText());
         config.setTags(tags.getText());

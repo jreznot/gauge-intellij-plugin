@@ -17,7 +17,6 @@
 package com.thoughtworks.gauge.settings;
 
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.util.Disposer;
 import org.jetbrains.annotations.Nls;
@@ -57,7 +56,7 @@ public class GaugeSettings implements SearchableConfigurable, Disposable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         model = gaugeConfig.getValues();
         GaugeSettingsService.getService().loadState(model);
     }

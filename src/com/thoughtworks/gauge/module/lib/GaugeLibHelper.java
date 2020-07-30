@@ -27,7 +27,7 @@ import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.thoughtworks.gauge.GaugeModuleComponent;
+import com.thoughtworks.gauge.GaugeModuleListener;
 import com.thoughtworks.gauge.PluginNotInstalledException;
 import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.core.Gauge;
@@ -166,7 +166,7 @@ public class GaugeLibHelper extends AbstractLibHelper {
         try {
             GaugeService gaugeService = Gauge.getGaugeService(module, true);
             if (gaugeService == null) {
-                gaugeService = GaugeModuleComponent.createGaugeService(module);
+                gaugeService = GaugeModuleListener.createGaugeService(module);
             }
             GaugeConnection gaugeConnection = gaugeService.getGaugeConnection();
             if (gaugeConnection == null) {

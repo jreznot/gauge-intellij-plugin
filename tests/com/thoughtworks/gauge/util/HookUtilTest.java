@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 public class HookUtilTest {
     @Test
-    public void TestIsHook() throws Exception {
+    public void TestIsHook() {
         PsiMethod method = mock(PsiMethod.class);
 
         PsiModifierList list = mock(PsiModifierList.class);
@@ -43,14 +43,14 @@ public class HookUtilTest {
     }
 
     @Test
-    public void TestIsHookWhenElementIsNotMethod() throws Exception {
+    public void TestIsHookWhenElementIsNotMethod() {
         PsiElement element = mock(PsiElement.class);
 
         assertFalse(HookUtil.isHook(element));
     }
 
     @Test
-    public void TestIsHookWhenNonHookAnnotation() throws Exception {
+    public void TestIsHookWhenNonHookAnnotation() {
         PsiMethod method = mock(PsiMethod.class);
 
         PsiModifierList list = mock(PsiModifierList.class);
@@ -63,7 +63,7 @@ public class HookUtilTest {
     }
 
     @Test
-    public void TestIsHookWhenNoAnnotationPresent() throws Exception {
+    public void TestIsHookWhenNoAnnotationPresent() {
         PsiMethod method = mock(PsiMethod.class);
 
         PsiModifierList list = mock(PsiModifierList.class);

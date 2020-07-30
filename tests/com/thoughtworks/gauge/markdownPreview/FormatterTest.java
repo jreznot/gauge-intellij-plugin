@@ -21,9 +21,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class FormatterTest {
-
     @Test
-    public void testFormat() throws Exception {
+    public void testFormat() {
         String text = "Steps Collection\n" +
                 "================\n" +
                 "\n" +
@@ -53,7 +52,7 @@ public class FormatterTest {
     }
 
     @Test
-    public void testFormatWithMultipleTables() throws Exception {
+    public void testFormatWithMultipleTables() {
         String text = "Steps Collection\n" +
                 "================\n" +
                 "\n" +

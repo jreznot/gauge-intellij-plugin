@@ -53,7 +53,7 @@ public class ReferenceSearch extends QueryExecutorBase<PsiReference, ReferencesS
             if (EventQueue.isDispatchThread())
                 ProgressManager.getInstance().runProcessWithProgressSynchronously(
                         () -> processElements(searchParameters, processor),
-                        "Find Usages", true, searchParameters.getElementToSearch().getProject()
+                        "Find usages", true, searchParameters.getElementToSearch().getProject()
                 );
             else
                 processElements(searchParameters, processor);

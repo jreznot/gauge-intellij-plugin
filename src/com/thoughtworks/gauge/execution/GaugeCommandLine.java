@@ -40,7 +40,7 @@ public class GaugeCommandLine {
             commandLine.setWorkDirectory(project.getBasePath());
             if (module != null)
                 commandLine.setWorkDirectory(GaugeUtil.moduleDir(module));
-            return commandLine;
         }
+        return commandLine;
     }
 }

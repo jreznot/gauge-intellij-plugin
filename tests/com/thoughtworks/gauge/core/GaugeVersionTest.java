@@ -37,12 +37,12 @@ public class GaugeVersionTest {
     }
 
     @Test
-    public void testIsPluginInstalledForInstalledPlugin() throws Exception {
+    public void testIsPluginInstalledForInstalledPlugin() {
         Assert.assertTrue(new GaugeVersionInfo("0.4.0", plugins).isPluginInstalled(plugins.get(0).name));
     }
 
     @Test
-    public void testIsPluginInstalledForUnInstalledPlugin() throws Exception {
+    public void testIsPluginInstalledForUnInstalledPlugin() {
         Assert.assertFalse(new GaugeVersionInfo("0.4.0", plugins).isPluginInstalled("haha"));
     }
 }

@@ -28,6 +28,7 @@ import java.io.File;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -58,6 +59,7 @@ public class StepCompletionProviderTest extends LightCodeInsightFixtureTestCase 
         myFixture.getEditor().getCaretModel().moveToOffset(49);
         myFixture.complete(CompletionType.BASIC, 1);
         List<String> strings = myFixture.getLookupElementStrings();
+        assertNotNull(strings);
         assertEquals(2, strings.size());
         assertTrue(strings.containsAll(asList("This is a step", "The step")));
     }
@@ -65,8 +67,8 @@ public class StepCompletionProviderTest extends LightCodeInsightFixtureTestCase 
     public void testStepAutoCompletionWithParams() throws Exception {
         myFixture.configureByFiles("SimpleSpec.spec", "SimpleSpec.txt");
         Gauge.addModule(myFixture.getModule(), new GaugeService(mockProcess, mockGaugeConnection));
-        StepValue stepValue1 = new StepValue("This is a step with {}", "This is a step with <param>", asList("param"));
-        when(mockGaugeConnection.fetchAllSteps()).thenReturn(asList(stepValue1));
+        StepValue stepValue1 = new StepValue("This is a step with {}", "This is a step with <param>", singletonList("param"));
+        when(mockGaugeConnection.fetchAllSteps()).thenReturn(singletonList(stepValue1));
         myFixture.getEditor().getCaretModel().moveToOffset(49);
         myFixture.complete(CompletionType.BASIC, 1);
         String expected = "*This is a step with \"param\"";
@@ -77,8 +79,8 @@ public class StepCompletionProviderTest extends LightCodeInsightFixtureTestCase 
     public void testStepAutoCompleteShouldReplaceBracesOfOnlyParams() throws Exception {
         myFixture.configureByFiles("SimpleSpec.spec", "SimpleSpec.txt");
         Gauge.addModule(myFixture.getModule(), new GaugeService(mockProcess, mockGaugeConnection));
-        StepValue stepValue1 = new StepValue("This is a step with {} and >", "This is a step with <param> and >", asList("param"));
-        when(mockGaugeConnection.fetchAllSteps()).thenReturn(asList(stepValue1));
+        StepValue stepValue1 = new StepValue("This is a step with {} and >", "This is a step with <param> and >", singletonList("param"));
+        when(mockGaugeConnection.fetchAllSteps()).thenReturn(singletonList(stepValue1));
         myFixture.getEditor().getCaretModel().moveToOffset(49);
         myFixture.complete(CompletionType.BASIC, 1);
         String expected = "*This is a step with \"param\" and >";

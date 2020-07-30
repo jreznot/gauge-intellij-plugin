@@ -114,6 +114,21 @@ public class GaugeUtil {
         return new File(projectDir, Constants.MANIFEST_FILE).exists();
     }
 
+    /**
+     * Returns whether or not the given file is a Gauge project directory. A file is a Gauge project directory if it
+     * is a directory that contains both a manifest file and a specs directory.
+     *
+     * @param dir the file to be examined.
+     * @return whether or not the given file is a Gauge project directory.
+     */
+    public static boolean isGaugeProjectDir(VirtualFile dir) {
+        return containsManifest(dir);
+    }
+
+    private static boolean containsManifest(VirtualFile projectDir) {
+        return projectDir.findChild(Constants.MANIFEST_FILE) != null;
+    }
+
     public static File moduleDir(Module module) {
         if (module == null) return null;
         if (GaugeUtil.isGradleModule(module)) return GaugeUtil.getProjectDirForGradleProject(module);
@@ -130,10 +145,11 @@ public class GaugeUtil {
 
     public static String classpathForModule(Module module) {
         if (GaugeUtil.isGradleModule(module)) {
-            String cp = "";
-            for (Module module1 : Gauge.getSubModules(module))
-                cp += OrderEnumerator.orderEntries(module1).recursively().getPathsList().getPathsString() + Constants.CLASSPATH_DELIMITER;
-            return cp;
+            StringBuilder cp = new StringBuilder();
+            for (Module subModule : Gauge.getSubModules(module))
+                cp.append(OrderEnumerator.orderEntries(subModule).recursively().getPathsList().getPathsString())
+                        .append(Constants.CLASSPATH_DELIMITER);
+            return cp.toString();
         }
         return OrderEnumerator.orderEntries(module).recursively().getPathsList().getPathsString();
     }

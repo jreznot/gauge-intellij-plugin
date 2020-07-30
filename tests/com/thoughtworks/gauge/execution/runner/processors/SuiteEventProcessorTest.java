@@ -26,7 +26,11 @@ import org.junit.Test;
 import static com.thoughtworks.gauge.execution.runner.processors.ScenarioEventProcessorTest.getError;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class SuiteEventProcessorTest {
     @Test
@@ -113,7 +117,7 @@ public class SuiteEventProcessorTest {
     }
 
     @Test
-    public void canProcess() throws Exception {
+    public void canProcess() {
         SuiteEventProcessor processor = new SuiteEventProcessor(null, null);
         ExecutionEvent event = new ExecutionEvent();
         event.type = ExecutionEvent.SUITE_START;
@@ -133,5 +137,4 @@ public class SuiteEventProcessorTest {
         verify(mockProcessor, never()).process(any(ServiceMessageBuilder.class), any(Integer.class), any(Integer.class));
         verify(mockProcessor, times(1)).processLineBreak();
     }
-
 }

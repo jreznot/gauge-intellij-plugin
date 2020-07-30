@@ -26,7 +26,11 @@ import org.junit.Test;
 import static com.thoughtworks.gauge.execution.runner.processors.ScenarioEventProcessorTest.getError;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class SpecEventProcessorTest {
     @Test

@@ -17,11 +17,11 @@
 package com.thoughtworks.gauge.module.lib;
 
 import com.intellij.openapi.module.Module;
-import com.thoughtworks.gauge.GaugeModuleComponent;
+import com.thoughtworks.gauge.GaugeModuleListener;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.util.GaugeUtil;
 
-import static com.thoughtworks.gauge.GaugeModuleComponent.isGaugeProject;
+import static com.thoughtworks.gauge.GaugeModuleListener.isGaugeProject;
 
 public abstract class AbstractLibHelper implements LibHelper {
     private final Module module;
@@ -30,10 +30,10 @@ public abstract class AbstractLibHelper implements LibHelper {
         this.module = module;
         if (isGaugeProject(module)) {
             if (!GaugeUtil.isMavenModule(module) && !GaugeUtil.isGradleModule(module)) {
-                GaugeModuleComponent.makeGaugeModuleType(module);
+                GaugeModuleListener.makeGaugeModuleType(module);
             }
             if (Gauge.getGaugeService(module, true) == null) {
-                GaugeModuleComponent.createGaugeService(module);
+                GaugeModuleListener.createGaugeService(module);
             }
         }
     }

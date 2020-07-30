@@ -22,12 +22,13 @@ import com.thoughtworks.gauge.language.psi.ConceptStep;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ConceptInspectionProviderTest {
     @Test
-    public void testGetElementReturnsStep() throws Exception {
+    public void testGetElementReturnsStep() {
         ConceptStep step = mock(ConceptStep.class);
 
         PsiElement element = new ConceptInspectionProvider().getElement(step);
@@ -36,14 +37,14 @@ public class ConceptInspectionProviderTest {
     }
 
     @Test
-    public void testGetElementReturnsNullIfElementNotPresent() throws Exception {
+    public void testGetElementReturnsNullIfElementNotPresent() {
         PsiElement element = new ConceptInspectionProvider().getElement(null);
 
-        assertEquals(null, element);
+        assertNull(element);
     }
 
     @Test
-    public void testGetElementReturnsConceptHeading() throws Exception {
+    public void testGetElementReturnsConceptHeading() {
         PsiElement e = mock(ConceptConceptHeading.class);
 
         when(e.getParent()).thenReturn(e);

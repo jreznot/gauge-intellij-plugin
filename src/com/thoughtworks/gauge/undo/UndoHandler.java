@@ -73,9 +73,11 @@ public class UndoHandler {
 
 
     private void runWriteAction() {
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            CommandProcessor.getInstance().executeCommand(project, () -> performUndoableAction(fileNames), name, name);
-        });
+        ApplicationManager.getApplication().runWriteAction(() ->
+                CommandProcessor.getInstance().executeCommand(project, () ->
+                        performUndoableAction(fileNames), name, name
+                )
+        );
     }
 
     private void performUndoableAction(List<String> filesChangedList) {

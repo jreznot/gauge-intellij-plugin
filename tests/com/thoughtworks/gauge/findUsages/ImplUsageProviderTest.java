@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 public class ImplUsageProviderTest {
     @Test
-    public void TestIsImplicitUsageWithNoModule() throws Exception {
+    public void TestIsImplicitUsageWithNoModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
 
         boolean isUsed = new ImplUsageProvider(null, helper).isImplicitUsage(mock(PsiElement.class));
@@ -41,7 +41,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageWithNoElement() throws Exception {
+    public void TestIsImplicitUsageWithNoElement() {
         ModuleHelper helper = mock(ModuleHelper.class);
 
         boolean isUsed = new ImplUsageProvider(null, helper).isImplicitUsage(null);
@@ -50,7 +50,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForClass() throws Exception {
+    public void TestIsImplicitUsageForClass() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiClass c = mock(PsiClassImpl.class);
         PsiMethod method = mock(PsiMethod.class);
@@ -68,7 +68,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForClassWithNoMethods() throws Exception {
+    public void TestIsImplicitUsageForClassWithNoMethods() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiClass c = mock(PsiClassImpl.class);
         when(helper.isGaugeModule(c)).thenReturn(true);
@@ -80,7 +80,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForMethodParameter() throws Exception {
+    public void TestIsImplicitUsageForMethodParameter() {
         ModuleHelper helper = mock(ModuleHelper.class);
         SpecStep element = mock(SpecStepImpl.class);
         PsiParameter parameter = mock(PsiParameterImpl.class);
@@ -93,7 +93,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForHook() throws Exception {
+    public void TestIsImplicitUsageForHook() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiMethod method = mock(PsiMethod.class);
 
@@ -110,7 +110,7 @@ public class ImplUsageProviderTest {
     }
 
     @Test
-    public void TestIsImplicitUsageForNonGaugeElement() throws Exception {
+    public void TestIsImplicitUsageForNonGaugeElement() {
         ModuleHelper helper = mock(ModuleHelper.class);
         PsiMethod method = mock(PsiMethod.class);
 

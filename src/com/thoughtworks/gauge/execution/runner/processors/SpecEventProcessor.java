@@ -52,7 +52,7 @@ public class SpecEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    public Boolean canProcess(ExecutionEvent event) throws ParseException {
+    public Boolean canProcess(ExecutionEvent event) {
         return event.type.equalsIgnoreCase(ExecutionEvent.SPEC_START) ||
                 event.type.equalsIgnoreCase(ExecutionEvent.SPEC_END);
     }

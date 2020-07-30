@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ExtractConceptDialog extends JDialog {
     private JPanel contentPane;
-    private com.intellij.ui.TextFieldWithAutoCompletion conceptName;
+    private com.intellij.ui.TextFieldWithAutoCompletion<?> conceptName;
     private JTextArea steps;
     private JComboBox<String> files;
     private JTextField newFile;

@@ -51,6 +51,6 @@ public class GaugeSettingsService implements PersistentStateComponent<GaugeSetti
     }
 
     public static GaugeSettingsService getService() {
-        return ApplicationManager.getApplication().getComponent(GaugeSettingsService.class);
+        return ApplicationManager.getApplication().getService(GaugeSettingsService.class);
     }
 }

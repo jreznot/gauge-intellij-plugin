@@ -32,7 +32,7 @@ public class SuiteEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    protected Boolean onStart(ExecutionEvent event) throws ParseException {
+    protected Boolean onStart(ExecutionEvent event) {
         return getProcessor().processLineBreak();
     }
 
@@ -42,7 +42,7 @@ public class SuiteEventProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    public Boolean canProcess(ExecutionEvent event) throws ParseException {
+    public Boolean canProcess(ExecutionEvent event) {
         return event.type.equalsIgnoreCase(ExecutionEvent.SUITE_START) ||
                 event.type.equalsIgnoreCase(ExecutionEvent.SUITE_END);
     }

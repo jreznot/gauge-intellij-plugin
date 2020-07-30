@@ -23,13 +23,14 @@ import com.thoughtworks.gauge.reference.ConceptReference;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ConceptStepImplTest {
     @Test
-    public void testShouldGetReferenceInGaugeModule() throws Exception {
+    public void testShouldGetReferenceInGaugeModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
         ASTNode node = mock(ASTNode.class);
         ConceptStepImpl conceptStep = new ConceptStepImpl(node, helper);
@@ -37,11 +38,12 @@ public class ConceptStepImplTest {
 
         PsiReference reference = conceptStep.getReference();
 
+        assertNotNull(reference);
         assertEquals(reference.getClass(), ConceptReference.class);
     }
 
     @Test
-    public void testShouldNotGetReferenceInNonGaugeModule() throws Exception {
+    public void testShouldNotGetReferenceInNonGaugeModule() {
         ModuleHelper helper = mock(ModuleHelper.class);
         ASTNode node = mock(ASTNode.class);
         ConceptStepImpl conceptStep = new ConceptStepImpl(node, helper);

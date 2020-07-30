@@ -29,7 +29,7 @@ public class UnexpectedEndProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    protected Boolean onStart(ExecutionEvent event) throws ParseException {
+    protected Boolean onStart(ExecutionEvent event) {
         return true;
     }
 
@@ -54,7 +54,7 @@ public class UnexpectedEndProcessor extends GaugeEventProcessor {
     }
 
     @Override
-    public Boolean canProcess(ExecutionEvent event) throws ParseException {
+    public Boolean canProcess(ExecutionEvent event) {
         return getCache().getCurrentId() == SuiteEventProcessor.SUITE_ID;
     }
 }

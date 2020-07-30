@@ -18,7 +18,8 @@ package com.thoughtworks.gauge;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleComponent;
+import com.intellij.openapi.project.ModuleListener;
+import com.intellij.openapi.project.Project;
 import com.thoughtworks.gauge.connection.GaugeConnection;
 import com.thoughtworks.gauge.core.Gauge;
 import com.thoughtworks.gauge.core.GaugeExceptionHandler;
@@ -39,25 +40,11 @@ import static com.thoughtworks.gauge.util.GaugeUtil.getGaugeSettings;
 import static com.thoughtworks.gauge.util.GaugeUtil.isGaugeProjectDir;
 import static com.thoughtworks.gauge.util.GaugeUtil.moduleDir;
 
-/**
- * The definition for what a Gauge module is according to IDEA.
- */
-public class GaugeModuleComponent implements ModuleComponent {
-    private final Module module;
-    private static final Logger LOG = Logger.getInstance(GaugeModuleComponent.class);
-
-    public GaugeModuleComponent(Module module) {
-        this.module = module;
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GaugeModuleComponent";
-    }
+public class GaugeModuleListener implements ModuleListener {
+    private static final Logger LOG = Logger.getInstance(GaugeModuleListener.class);
 
     @Override
-    public void moduleAdded() {
+    public void moduleAdded(@NotNull Project project, @NotNull Module module) {
         new LibHelperFactory().helperFor(module).checkDeps();
     }
 
@@ -83,11 +70,11 @@ public class GaugeModuleComponent implements ModuleComponent {
                     gaugeConn = new GaugeConnection(apiPort);
                     break;
                 } catch (java.lang.RuntimeException ex) {
-                    LOG.warn("Unable to open connection on try " + i + ".   Waiting and trying again");
+                    LOG.warn("Unable to open connection on try " + i + ". Waiting and trying again");
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        LOG.debug(e);
                     }
                 }
             }

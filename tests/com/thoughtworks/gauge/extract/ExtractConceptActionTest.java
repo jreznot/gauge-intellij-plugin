@@ -44,7 +44,7 @@ public class ExtractConceptActionTest {
     private VirtualFile vFile;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dataContext = mock(DataContext.class);
         vFile = mock(VirtualFile.class);
         project = mock(Project.class);

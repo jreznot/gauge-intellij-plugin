@@ -37,7 +37,7 @@ public class GaugeFoldingBuilderTest {
     private List<FoldingDescriptor> descriptors;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         descriptors = new ArrayList<>();
         node = mock(ASTNode.class);
         heading = mock(ASTNode.class);
@@ -46,7 +46,7 @@ public class GaugeFoldingBuilderTest {
     }
 
     @Test
-    public void testShouldAddNode() throws Exception {
+    public void testShouldAddNode() {
         when(node.getText()).thenReturn("## heading\n* text\n* text1");
 
         new SpecFoldingBuilder().addNode(descriptors, node, heading);
@@ -58,7 +58,7 @@ public class GaugeFoldingBuilderTest {
     }
 
     @Test
-    public void testShouldAddNodeWithMultipleNewLinesAtTheEnd() throws Exception {
+    public void testShouldAddNodeWithMultipleNewLinesAtTheEnd() {
         when(node.getText()).thenReturn("## heading\n* text\n* text1\n\n\n");
 
         new SpecFoldingBuilder().addNode(descriptors, node, heading);
@@ -70,7 +70,7 @@ public class GaugeFoldingBuilderTest {
     }
 
     @Test
-    public void testShouldAddNodeEndingWithNewLine() throws Exception {
+    public void testShouldAddNodeEndingWithNewLine() {
         when(node.getText()).thenReturn("## heading\n* step 1\n* step 2\n");
 
         new SpecFoldingBuilder().addNode(descriptors, node, heading);
@@ -82,7 +82,7 @@ public class GaugeFoldingBuilderTest {
     }
 
     @Test
-    public void testShouldNotAddNodeWhenOnlyHeadingIsPresent() throws Exception {
+    public void testShouldNotAddNodeWhenOnlyHeadingIsPresent() {
         when(node.getText()).thenReturn("## heading\n\n");
 
         new SpecFoldingBuilder().addNode(descriptors, node, heading);
@@ -91,7 +91,7 @@ public class GaugeFoldingBuilderTest {
     }
 
     @Test
-    public void testShouldNotAddNodeWhenHeadingNotPresent() throws Exception {
+    public void testShouldNotAddNodeWhenHeadingNotPresent() {
         when(node.getText()).thenReturn("## heading\n");
 
         new SpecFoldingBuilder().addNode(descriptors, node, null);
@@ -99,9 +99,8 @@ public class GaugeFoldingBuilderTest {
         assertEquals(descriptors.size(), 0);
     }
 
-
     @Test
-    public void testShouldNotAddNode() throws Exception {
+    public void testShouldNotAddNode() {
         when(node.getText()).thenReturn("## head\n");
 
         new SpecFoldingBuilder().addNode(descriptors, node, heading);

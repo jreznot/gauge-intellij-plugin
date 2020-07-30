@@ -42,6 +42,6 @@ public class GaugeModuleConfigurationProvider implements ModuleConfigurationEdit
         editors.add(editorFactory.createModuleContentRootsEditor(state));
         editors.add(editorFactory.createOutputEditor(state));
         editors.add(editorFactory.createClasspathEditor(state));
-        return editors.toArray(new ModuleConfigurationEditor[editors.size()]);
+        return editors.toArray(new ModuleConfigurationEditor[0]);
     }
 }

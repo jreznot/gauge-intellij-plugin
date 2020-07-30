@@ -16,12 +16,10 @@
 
 package com.thoughtworks.gauge.execution.runner;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsAction;
 import com.intellij.openapi.module.Module;
@@ -57,7 +55,7 @@ public class GaugeRerunFailedAction extends AbstractRerunFailedTestsAction {
 
         @Nullable
         @Override
-        public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
+        public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) {
             GeneralCommandLine commandLine = GaugeCommandLine.getInstance(config.getModule(), getProject());
             commandLine.addParameters(Constants.RUN, Constants.FAILED);
             return new GaugeCommandLineState(commandLine, getProject(), env, config);
@@ -70,7 +68,7 @@ public class GaugeRerunFailedAction extends AbstractRerunFailedTestsAction {
         }
 
         @Override
-        public void checkConfiguration() throws RuntimeConfigurationException {
+        public void checkConfiguration() {
         }
 
         @NotNull

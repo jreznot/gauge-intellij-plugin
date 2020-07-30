@@ -16,10 +16,9 @@
 
 package com.thoughtworks.gauge.findUsages;
 
+import com.intellij.find.FindBundle;
 import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.find.findUsages.FindUsagesOptions;
-import com.intellij.find.findUsages.JavaFindUsagesHandler;
-import com.intellij.find.findUsages.JavaFindUsagesHandlerFactory;
 import com.intellij.ide.util.SuperMethodWarningUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
@@ -38,33 +37,29 @@ public class StepFindUsagesHandler extends FindUsagesHandler {
     public boolean processElementUsages(@NotNull PsiElement psiElement,
                                         @NotNull Processor<? super UsageInfo> processor,
                                         @NotNull FindUsagesOptions findUsagesOptions) {
-        ApplicationManager.getApplication().invokeLater(() -> runFindUsageReadAction(psiElement, processor, findUsagesOptions));
+        ApplicationManager.getApplication().invokeLater(() ->
+                runFindUsageReadAction(psiElement, processor, findUsagesOptions)
+        );
         return true;
     }
 
-    private void runFindUsageReadAction(final PsiElement psiElement, final Processor<? super UsageInfo> processor, final FindUsagesOptions findUsagesOptions) {
+    private void runFindUsageReadAction(PsiElement psiElement, Processor<? super UsageInfo> processor,
+                                        FindUsagesOptions findUsagesOptions) {
         ApplicationManager.getApplication().runReadAction(() -> {
             if (psiElement instanceof PsiMethod) {
-                PsiMethod[] psiMethods = SuperMethodWarningUtil.checkSuperMethods((PsiMethod) psiElement, CustomFUH.getActionString());
+                PsiMethod[] psiMethods = SuperMethodWarningUtil.checkSuperMethods((PsiMethod) psiElement,
+                        FindBundle.message("find.super.method.warning.action.verb"));
                 if (psiMethods.length < 1) return;
-                for (PsiElement method : psiMethods)
+                for (PsiElement method : psiMethods) {
                     StepFindUsagesHandler.this.processUsages(method, processor, findUsagesOptions);
+                }
             }
             StepFindUsagesHandler.this.processUsages(psiElement, processor, findUsagesOptions);
         });
     }
 
-    public void processUsages(final PsiElement psiElement, final Processor<? super UsageInfo> processor, final FindUsagesOptions findUsagesOptions) {
+    public void processUsages(PsiElement psiElement, Processor<? super UsageInfo> processor,
+                              FindUsagesOptions findUsagesOptions) {
         super.processElementUsages(psiElement, processor, findUsagesOptions);
-    }
-
-    private static class CustomFUH extends JavaFindUsagesHandler {
-        public CustomFUH(@NotNull PsiElement psiElement, @NotNull JavaFindUsagesHandlerFactory javaFindUsagesHandlerFactory) {
-            super(psiElement, javaFindUsagesHandlerFactory);
-        }
-
-        public static @NotNull String getActionString() {
-            return ACTION_STRING;
-        }
     }
 }

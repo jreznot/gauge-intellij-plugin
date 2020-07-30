@@ -118,7 +118,7 @@ public class ScenarioEventProcessorTest {
     }
 
     @Test
-    public void canProcess() throws Exception {
+    public void canProcess() {
         ScenarioEventProcessor processor = new ScenarioEventProcessor(null, null);
         ExecutionEvent event = new ExecutionEvent();
         event.type = ExecutionEvent.SCENARIO_START;

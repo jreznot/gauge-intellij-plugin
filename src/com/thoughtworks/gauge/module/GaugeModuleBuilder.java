@@ -73,8 +73,11 @@ public class GaugeModuleBuilder extends JavaModuleBuilder {
         return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, this, this::isSuitableSdkType);
     }
 
-    private void gaugeInit(final ModifiableRootModel modifiableRootModel) throws ConfigurationException {
-        File directory = new File(getModuleFileDirectory());
+    private void gaugeInit(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+        String moduleFileDirectory = getModuleFileDirectory();
+        if (moduleFileDirectory == null) return;
+
+        File directory = new File(moduleFileDirectory);
         if (GaugeUtil.isGaugeProjectDir(directory)) {
             throw new ConfigurationException("Given location is already a Gauge Project. Please try to initialize a Gauge project in a different location.");
         }

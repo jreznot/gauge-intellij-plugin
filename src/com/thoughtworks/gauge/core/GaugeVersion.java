@@ -35,7 +35,7 @@ public class GaugeVersion {
     private static final Logger LOG = Logger.getInstance(GaugeVersion.class);
     private static GaugeVersionInfo versionInfo = getVersion(true);
 
-    public static GaugeVersionInfo getVersion(Boolean update) {
+    public static GaugeVersionInfo getVersion(boolean update) {
         if (!update) return versionInfo;
         GaugeVersionInfo gaugeVersionInfo = new GaugeVersionInfo();
         try {
@@ -71,7 +71,7 @@ public class GaugeVersion {
         return gaugeVersionInfo;
     }
 
-    public static Boolean isGreaterOrEqual(String v1, Boolean update) {
+    public static Boolean isGreaterOrEqual(String v1, boolean update) {
         getVersion(update);
         return versionInfo.isGreaterOrEqual(new GaugeVersionInfo(v1));
     }

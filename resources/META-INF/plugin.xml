@@ -1,26 +1,29 @@
 <idea-plugin>
     <id>com.thoughtworks.gauge</id>
     <name>Gauge</name>
-    <vendor email="getgauge@googlegroups.com" url="http://gauge.org">Gauge</vendor>
+    <vendor>JetBrains</vendor>
     <depends>com.intellij.modules.java</depends>
 
     <description><![CDATA[
-      Plugin for writing Gauge tests
-      <p>The plugin provides the following basic features:</p>
+        Plugin for writing <a href="http://gauge.org">Gauge tests</a> (originally developed by Thoughtworks Inc.)
+        <p>The plugin provides the following features:</p>
         <ul>
             <li>Basic language parsing and highlighting</li>
             <li>Project Creation</li>
-            <li>Auto completion </li>
+            <li>Auto completion</li>
             <li>Navigation from step to implementation</li>
-            <li>Quick Fix for unimplemented steps </li>
+            <li>Quick Fix for unimplemented steps</li>
             <li>Execution and Debugging specs</li>
             <li>Support for Concepts</li>
             <li>Refactoring support</li>
         </ul>
-        <br>
-    ]]></description>
+        ]]></description>
 
     <change-notes><![CDATA[
+     <p>0.4</p>
+     <ul>
+           <li> Compatibility with IntelliJ IDEA 2020.2 </li>
+     </ul>
      <p>0.3.21</p>
      <ul>
            <li> Discover gauge in gradle submodules </li>
@@ -95,21 +98,17 @@
     ]]>
     </change-notes>
 
-    <project-components>
-        <component>
-            <implementation-class>com.thoughtworks.gauge.GaugeComponent</implementation-class>
-        </component>
-    </project-components>
-
-    <module-components>
-        <component>
-            <implementation-class>com.thoughtworks.gauge.GaugeModuleComponent</implementation-class>
-        </component>
-    </module-components>
+    <projectListeners>
+        <listener class="com.thoughtworks.gauge.GaugeModuleListener"
+                  topic="com.intellij.openapi.project.ModuleListener"/>
+        <listener class="com.thoughtworks.gauge.GaugeProjectListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </projectListeners>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-        <fileTypeFactory implementation="com.thoughtworks.gauge.language.SpecFileTypeFactory"/>
+        <fileType name="Specification" language="Specification" extensions="spec;md"/>
+        <fileType name="Concept" language="Concept" extensions="cpt"/>
+
         <lang.parserDefinition language="Specification"
                                implementationClass="com.thoughtworks.gauge.parser.SpecParserDefinition"/>
         <lang.parserDefinition language="Concept"
@@ -149,7 +148,8 @@
                                  implementationClass="com.thoughtworks.gauge.findUsages.ConceptStepFindUsagesProvider"/>
         <referencesSearch implementation="com.thoughtworks.gauge.findUsages.ReferenceSearch"/>
         <findUsagesHandlerFactory implementation="com.thoughtworks.gauge.findUsages.CustomFindUsagesHandlerFactory"/>
-        <defaultLiveTemplatesProvider implementation="com.thoughtworks.gauge.idea.template.TableTemplateProvider"/>
+        <defaultLiveTemplates file="liveTemplates/gaugeTemplates.xml"/>
+
         <liveTemplateContext implementation="com.thoughtworks.gauge.idea.template.LiveTemplateContext"/>
         <fileBasedIndex implementation="com.thoughtworks.gauge.stub.FileStub"/>
         <lang.commenter language="Specification" implementationClass="com.thoughtworks.gauge.language.StepCommenter"/>
@@ -185,13 +185,9 @@
             <descriptionDirectoryName>ConvertToStaticArgIntention</descriptionDirectoryName>
         </intentionAction>
         <webBrowserUrlProvider implementation="com.thoughtworks.gauge.markdownPreview.GaugeWebBrowserPreview"/>
-    </extensions>
 
-    <application-components>
-        <component>
-            <implementation-class>com.thoughtworks.gauge.settings.GaugeSettingsService</implementation-class>
-        </component>
-    </application-components>
+        <applicationService serviceImplementation="com.thoughtworks.gauge.settings.GaugeSettingsService"/>
+    </extensions>
 
     <actions>
         <action id="Gauge.Format"
@@ -206,5 +202,4 @@
             <keyboard-shortcut first-keystroke="ctrl alt c" keymap="$default"/>
         </action>
     </actions>
-
 </idea-plugin>

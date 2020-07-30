@@ -32,7 +32,7 @@ import com.thoughtworks.gauge.inspection.GaugeError;
 import com.thoughtworks.gauge.undo.UndoHandler;
 import com.thoughtworks.gauge.util.GaugeUtil;
 import gauge.messages.Api;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
 
@@ -48,7 +48,7 @@ class GaugeRefactorHandler {
         this.editor = editor;
     }
 
-    void compileAndRefactor(String currentStepText, String newStepText, @Nullable RefactorStatusCallback refactorStatusCallback) {
+    void compileAndRefactor(String currentStepText, String newStepText, @NotNull RefactorStatusCallback refactorStatusCallback) {
         refactorStatusCallback.onStatusChange("Compiling...");
         TransactionId contextTransaction = TransactionGuard.getInstance().getContextTransaction();
         CompilerManager.getInstance(project).make((aborted, errors, warnings, context) -> {
@@ -65,7 +65,7 @@ class GaugeRefactorHandler {
         Module module = GaugeUtil.moduleForPsiElement(file);
         TransactionGuard.getInstance().submitTransaction(() -> {
         }, contextTransaction, () -> {
-            Api.PerformRefactoringResponse response = null;
+            Api.PerformRefactoringResponse response;
             FileDocumentManager.getInstance().saveAllDocuments();
             FileDocumentManager.getInstance().saveDocumentAsIs(editor.getDocument());
             GaugeService gaugeService = Gauge.getGaugeService(module, true);

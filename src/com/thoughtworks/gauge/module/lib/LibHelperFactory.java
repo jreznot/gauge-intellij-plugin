@@ -19,7 +19,7 @@ package com.thoughtworks.gauge.module.lib;
 import com.intellij.openapi.module.Module;
 import com.thoughtworks.gauge.util.GaugeUtil;
 
-import static com.thoughtworks.gauge.GaugeModuleComponent.isGaugeModule;
+import static com.thoughtworks.gauge.GaugeModuleListener.isGaugeModule;
 
 public class LibHelperFactory {
     private static final LibHelper DEFAULT = () -> {
