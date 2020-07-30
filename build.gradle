@@ -25,14 +25,19 @@ allprojects {
         mavenCentral()
     }
 }
+
 dependencies {
     compile(
-            'com.thoughtworks.gauge:gauge-java:0.7.3',
-            'com.thoughtworks.gauge:gauge-api-client:1.0.27'
+            'com.thoughtworks.gauge:gauge-java:0.7.3'
     )
     testCompile(
             'org.mockito:mockito-all:1.10.19',
     )
+}
+
+patchPluginXml {
+    sinceBuild '202'
+    untilBuild '203'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
