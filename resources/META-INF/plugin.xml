@@ -106,8 +106,12 @@
     </projectListeners>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="Specification" language="Specification" extensions="spec;md"/>
-        <fileType name="Concept" language="Concept" extensions="cpt"/>
+        <fileType name="Specification" language="Specification"
+                  implementationClass="com.thoughtworks.gauge.language.SpecFileType"
+                  extensions="spec;md"/>
+        <fileType name="Concept" language="Concept"
+                  implementationClass="com.thoughtworks.gauge.language.ConceptFileType"
+                  extensions="cpt"/>
 
         <lang.parserDefinition language="Specification"
                                implementationClass="com.thoughtworks.gauge.parser.SpecParserDefinition"/>
