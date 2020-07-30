@@ -147,7 +147,7 @@ public class GaugeUtil {
         return selectedFile.getFileType().getClass().equals(SpecFileType.class);
     }
 
-    public static boolean isGaugeModule(Module module) {
+    public static boolean isGaugeModule(@NotNull Module module) {
         return isGaugeProjectDir(moduleDir(module));
     }
 

@@ -2,8 +2,10 @@
     <id>com.thoughtworks.gauge</id>
     <name>Gauge</name>
     <vendor>JetBrains</vendor>
+
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.properties</depends>
+    <depends>com.intellij.modules.json</depends>
 
     <description><![CDATA[
         Plugin for writing <a href="http://gauge.org">Gauge tests</a> (originally developed by Thoughtworks Inc.)
@@ -24,6 +26,8 @@
      <p>0.4</p>
      <ul>
            <li> Compatibility with IntelliJ IDEA 2020.2 </li>
+           <li> Do not highlight known env properties as unused </li>
+           <li> Provide JSON schema for manifest.json file </li>
      </ul>
      <p>0.3.21</p>
      <ul>
@@ -203,6 +207,10 @@
 
         <properties.implicitPropertyUsageProvider
                 implementation="com.thoughtworks.gauge.properties.GaugeImplicitPropertyUsageProvider"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="com.thoughtworks.gauge.json.ManifestSchemaProviderFactory"/>
     </extensions>
 
     <actions>

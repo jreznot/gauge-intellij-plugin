@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class GaugeImplicitPropertyUsageProvider extends ImplicitPropertyUsageProvider {
+class GaugeImplicitPropertyUsageProvider extends ImplicitPropertyUsageProvider {
 
     private static final Set<String> GAUGE_DEFAULT_PROPERTIES = ImmutableSet.of(
             "gauge_reports_dir",
@@ -63,9 +63,9 @@ public class GaugeImplicitPropertyUsageProvider extends ImplicitPropertyUsagePro
         String fileName = containingFile.getName();
 
         if (GAUGE_DEFAULT_PROPERTIES.contains(propertyName) && "default.properties".equals(fileName)
-            || GAUGE_JAVA_PROPERTIES.contains(propertyName) && "java.properties".equals(fileName)) {
+                || GAUGE_JAVA_PROPERTIES.contains(propertyName) && "java.properties".equals(fileName)) {
             Module module = ModuleUtilCore.findModuleForFile(containingFile);
-            return GaugeUtil.isGaugeModule(module);
+            return module != null && GaugeUtil.isGaugeModule(module);
         }
 
         return false;
