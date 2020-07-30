@@ -98,6 +98,8 @@
     ]]>
     </change-notes>
 
+    <resource-bundle>messages.GaugeBundle</resource-bundle>
+
     <projectListeners>
         <listener class="com.thoughtworks.gauge.GaugeProjectListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
@@ -165,15 +167,22 @@
                              implementationClass="com.thoughtworks.gauge.folding.SpecFoldingBuilder"/>
         <lang.foldingBuilder language="Concept"
                              implementationClass="com.thoughtworks.gauge.folding.ConceptFoldingBuilder"/>
+
         <localInspection language="Specification"
                          implementationClass="com.thoughtworks.gauge.inspection.SpecInspectionProvider"
-                         displayName="Specification" groupName="Gauge" enabledByDefault="true" level="ERROR"/>
+                         groupKey="gauge.inspection.group"
+                         key="gauge.inspection.SpecInspectionProvider.name"
+                         enabledByDefault="true" level="ERROR"/>
         <localInspection language="Concept"
                          implementationClass="com.thoughtworks.gauge.inspection.ConceptInspectionProvider"
-                         displayName="Concept" groupName="Gauge" enabledByDefault="true" level="ERROR"/>
+                         groupKey="gauge.inspection.group"
+                         key="gauge.inspection.ConceptInspectionProvider.name"
+                         enabledByDefault="true" level="ERROR"/>
         <globalInspection language="Specification"
                           implementationClass="com.thoughtworks.gauge.inspection.GlobalInspectionProvider"
-                          displayName="Global" groupName="Gauge" enabledByDefault="true" isInternal="true"/>
+                          groupKey="gauge.inspection.group"
+                          key="gauge.inspection.GlobalInspectionProvider.name"
+                          enabledByDefault="true" isInternal="true"/>
 
         <applicationConfigurable groupId="tools" id="com.thoughtworks.gauge" displayName="Gauge"
                                  instance="com.thoughtworks.gauge.settings.GaugeSettings"/>
@@ -193,14 +202,11 @@
     </extensions>
 
     <actions>
-        <action id="Gauge.Format"
-                class="com.thoughtworks.gauge.formatter.SpecFormatter"
-                text="Spec Format" description="Format spec files">
+        <action id="Gauge.Format" class="com.thoughtworks.gauge.formatter.SpecFormatter">
             <keyboard-shortcut first-keystroke="ctrl alt shift l" keymap="$default"/>
         </action>
         <action id="Gauge.Extract"
-                class="com.thoughtworks.gauge.extract.ExtractConceptAction"
-                text="Extract to Concept">
+                class="com.thoughtworks.gauge.extract.ExtractConceptAction">
             <add-to-group group-id="RefactoringMenu" anchor="last"/>
             <keyboard-shortcut first-keystroke="ctrl alt c" keymap="$default"/>
         </action>
